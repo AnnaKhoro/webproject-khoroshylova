@@ -13,9 +13,9 @@ export function renderCard(episode) {
       <h3 class="card__title">${escapeHtml(episode.title)}</h3>
       <p class="card__subtitle">${escapeHtml(episode.podcastTitle)} · ${escapeHtml(episode.category)}</p>
       <p class="card__text">${escapeHtml(episode.description)}</p>
+      <p class="card__text">${episode.duration} · ${formatDate(episode.publishedAt)}${isNew}</p>
       <div class="card__footer">
-        <span>${episode.duration} · ${formatDate(episode.publishedAt)}${isNew}</span>
-        <button class="button button--primary button--small" type="button" data-id="${episode.id}">Слухати</button>
+          <button class="button button--primary button--small" type="button" data-action="open" data-id="${episode.id}">Детальніше</button>
       </div>
     </article>`;
 }

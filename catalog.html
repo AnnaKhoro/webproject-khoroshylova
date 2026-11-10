@@ -28,14 +28,23 @@
   <main class="container catalog">
     <h1>Каталог випусків</h1>
     <div class="catalog__filters">
-      <form class="search" action="catalog.html" role="search">
-        <label class="visually-hidden" for="catalog-query">Пошук випусків</label>
-        <input class="search__input" id="catalog-query" name="q" type="search" placeholder="Назва, тема або подкаст">
-        <button class="button button--primary" type="submit">Знайти</button>
-      </form>
-      <div class="tags" id="catalog-tags"></div>
+      <div class="catalog__controls">
+        <form class="search" id="catalog-search" role="search">
+          <label class="visually-hidden" for="catalog-query">Пошук випусків</label>
+          <input class="search__input" id="catalog-query" name="q" type="search" placeholder="Назва, тема або подкаст" autocomplete="off">
+          <button class="button button--primary" type="submit">Знайти</button>
+        </form>
+        <div class="field">
+          <label class="field__label" for="catalog-sort">Сортування</label>
+          <select class="field__input" id="catalog-sort" name="sort">
+            <option value="title">За назвою (А–Я)</option>
+            <option value="date">Спочатку нові</option>
+          </select>
+        </div>
+      </div>
+      <div class="tags" id="catalog-tags" aria-label="Категорії"></div>
     </div>
-    <p class="catalog__summary" id="catalog-summary" role="status">Завантаження каталогу…</p>
+    <p class="catalog__summary" id="catalog-summary" role="status" aria-live="polite">Завантаження каталогу…</p>
     <div class="cards catalog__list" id="catalog"></div>
   </main>
 

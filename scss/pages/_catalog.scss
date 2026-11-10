@@ -1,5 +1,6 @@
-// Сторінка каталогу випусків: розкладка фільтрів, підсумку й сітки
+// Сторінка каталогу випусків: розкладка фільтрів, підсумку, сітки й форми пропозиції
 @use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
 
 .catalog {
   padding: $space * 4 0;
@@ -9,6 +10,18 @@
     flex-direction: column;
     gap: $space * 2;
     margin-bottom: $space * 3;
+  }
+
+  &__controls {
+    display: flex;
+    flex-direction: column;
+    gap: $space * 2;
+
+    @include respond-to(tablet) {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
   }
 
   &__summary {

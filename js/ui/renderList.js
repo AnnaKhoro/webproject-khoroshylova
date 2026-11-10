@@ -11,13 +11,15 @@ export function renderList(episodes) {
         <span class="alert__text"><b>Нічого не знайдено.</b> Спробуйте інше слово або виберіть іншу категорію.</span>
       </div>`;
   }
-  return episodes.map(renderCard).join('');
+  return episodes.map((episode) => renderCard(episode)).join('');
 }
 
-// Мітки категорій з кількістю випусків; поточна позначена модифікатором tag--active
-export function renderCategoryTags(categories, counts, activeSlug = '') {
-  const all = `<a class="tag${activeSlug ? '' : ' tag--active'}" href="catalog.html">Усі</a>`;
-  const items = categories.map((c) => `
-    <a class="tag${c.slug === activeSlug ? ' tag--active' : ''}" href="?category=${c.slug}">${escapeHtml(c.name)} (${counts[c.name] ?? 0})</a>`);
-  return all + items.join('');
+// Кнопки категорій з кількістю випусків; поточна позначена модифікатором tag--active і aria-pressed
+export function renderCategoryTags(categories, counts, activeSlug = null) {
+  const tag = (slug, label) => {
+    const active = slug === (activeSlug ?? '');
+    return `<button class="tag${active ? ' tag--active' : ''}" type="button" data-category="${slug}" aria-pressed="${active}">${label}</button>`;
+  };
+  const total = Object.values(counts).reduce((sum, n) => sum + n, 0);
+  return tag('', `Усі (${total})`) + categories.map((c) => tag(c.slug, `${escapeHtml(c.name)} (${counts[c.name] ?? 0})`)).join('');
 }
