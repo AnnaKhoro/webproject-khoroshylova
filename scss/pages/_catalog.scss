@@ -24,6 +24,11 @@
     }
   }
 
+  // поле пошуку займає всю вільну ширину ряду поруч із сортуванням
+  &__controls > .search {
+    flex: 1;
+  }
+
   &__summary {
     margin-bottom: $space * 2;
     color: var(--color-muted);
