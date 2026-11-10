@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI-кіт — Хвиля</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">Хвиля</a>
+      <nav class="nav">
+        <a class="nav-link" href="#">Каталог</a>
+        <a class="nav-link" href="#">Пошук</a>
+        <a class="nav-link" href="#">Вибране</a>
+        <a class="button button--primary button--small" href="#">Увійти</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container kit">
+    <h1>UI-кіт «Хвилі»</h1>
+    <p class="kit__intro">Вітрина компонентів інтерфейсу за методологією БЕМ: кожен блок показано з усіма модифікаторами й станами. Стилі — у scss/components/, кольори — користувацькі властивості з scss/base/_theme.scss.</p>
+
+    <section class="kit__section" id="button">
+      <h2>Кнопка — button</h2>
+      <p class="kit__caption">Модифікатори вигляду --primary, --secondary, --ghost; розміру --small; стан [disabled]. Наведення, :focus-visible (клавіша Tab) і :active видно при взаємодії.</p>
+      <div class="kit__row">
+        <button class="button button--primary" type="button">Слухати</button>
+        <button class="button button--secondary" type="button">У вибране</button>
+        <button class="button button--ghost" type="button">Скасувати</button>
+        <button class="button button--primary" type="button" disabled>Недоступно</button>
+      </div>
+      <div class="kit__row">
+        <button class="button button--primary button--small" type="button">Увійти</button>
+        <button class="button button--secondary button--small" type="button">Детальніше</button>
+        <button class="button button--ghost button--small" type="button">Тема</button>
+        <button class="button button--secondary button--small" type="button" disabled>Недоступно</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p class="footer-text">© 2026 «Хвиля» — навчальний проєкт з дисципліни «Вебтехнології та вебдизайн».<br>Автор: Хорошилова Анна, група 5-ІПБ</p>
+      <nav class="footer-nav">
+        <a class="footer-link" href="https://github.com/AnnaKhoro/webproject-khoroshylova">Репозиторій</a>
+        <a class="footer-link" href="docs/tz.md">Технічне завдання</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

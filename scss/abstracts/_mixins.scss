@@ -34,15 +34,10 @@
   }
 }
 
-// Основна кнопка у фірмовому кольорі; внутрішні відступи — параметр
-@mixin button-primary($padding: $space $space * 2) {
-  padding: $padding;
-  border-radius: $radius;
-  background: $color-primary;
-  color: $color-on-primary;
-  transition: background $transition;
-
-  &:hover {
-    background: $color-primary-hover;
+// Видимий індикатор фокусу для клавіатури (замість прибраного outline)
+@mixin focus-ring($offset: 2px) {
+  &:focus-visible {
+    outline: $focus-ring solid var(--color-focus);
+    outline-offset: $offset;
   }
 }

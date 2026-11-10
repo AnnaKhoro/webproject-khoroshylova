@@ -1,4 +1,4 @@
-// Головна сторінка: головний блок, категорії, картки випусків
+// Головна сторінка: головний блок, пошук, категорії, сітка карток
 @use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
@@ -27,15 +27,10 @@
     flex: 1;
     padding: $space $space * 2;
     font: inherit;
+    color: $color-text;
+    background: $color-surface;
     border: 1px solid $color-border;
     border-radius: $radius;
-  }
-
-  &-btn {
-    @include button-primary($space $space * 3);
-    font: inherit;
-    border: none;
-    cursor: pointer;
   }
 }
 
@@ -121,9 +116,5 @@
     margin-top: auto;
     color: $color-muted;
     font-size: $fs-sm;
-  }
-
-  &-btn {
-    @include button-primary($space * 0.5 $space * 2);
   }
 }

@@ -1,0 +1,41 @@
+// Кольори інтерфейсу як користувацькі властивості CSS.
+// Значення світлої теми беруться зі змінних SCSS; компоненти використовують лише var(--color-…).
+@use '../abstracts/variables' as *;
+
+:root {
+  --color-primary: #{$color-primary};
+  --color-primary-hover: #{$color-primary-hover};
+  --color-primary-soft: #{$color-primary-soft};
+  --color-secondary: #{$color-secondary};
+  --color-accent-text: #{$color-accent-text};
+  --color-text: #{$color-text};
+  --color-muted: #{$color-muted};
+  --color-bg: #{$color-bg};
+  --color-bg-alt: #{$color-bg-alt};
+  --color-surface: #{$color-surface};
+  --color-border: #{$color-border};
+  --color-on-primary: #{$color-on-primary};
+  --color-focus: #{$color-primary};
+  --color-footer-bg: #{$color-footer-bg};
+  --color-footer-text: #{$color-footer-text};
+  --color-success: #{$color-success};
+  --color-success-bg: #{$color-success-bg};
+  --color-error: #{$color-error};
+  --color-error-bg: #{$color-error-bg};
+  --color-warning: #{$color-warning};
+  --color-warning-bg: #{$color-warning-bg};
+  --color-overlay: #{$color-overlay};
+  --color-on-image: #ffffff;  // текст поверх градієнтної обкладинки в обох темах
+}
+// Текст лише для екранних читачів (підпис поля пошуку)
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

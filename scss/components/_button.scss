@@ -1,0 +1,65 @@
+// Кнопка: .button + модифікатор вигляду (--primary / --secondary / --ghost) і розміру (--small)
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space;
+  padding: $space * 1.5 $space * 3;
+  border: 1px solid transparent;
+  border-radius: $radius;
+  font: inherit;
+  font-weight: $fw-semibold;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background $transition, border-color $transition, color $transition;
+
+  @include focus-ring;
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &--primary {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+
+    &:hover {
+      background: var(--color-primary-hover);
+    }
+  }
+
+  &--secondary {
+    background: transparent;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+
+    &:hover {
+      background: var(--color-primary-soft);
+    }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: var(--color-text);
+
+    &:hover {
+      background: var(--color-primary-soft);
+      color: var(--color-primary);
+    }
+  }
+
+  &--small {
+    padding: $space * 0.75 $space * 2;
+    font-size: $fs-sm;
+  }
+
+  &[disabled],
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}

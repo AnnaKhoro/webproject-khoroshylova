@@ -4,7 +4,8 @@
 @use 'abstracts/variables' as *;
 @use 'abstracts/mixins' as *;
 
-// 2. base — скидання стилів і типографіка
+// 2. base — тема (користувацькі властивості), скидання стилів і типографіка
+@use 'base/theme';
 @use 'base/reset';
 @use 'base/typography';
 
@@ -13,7 +14,9 @@
 @use 'layout/header';
 @use 'layout/footer';
 
-// 4. components — заповниться на ПР4
+// 4. components — UI-кіт за БЕМ
+@use 'components/button';
 
 // 5. pages — правила конкретних сторінок
 @use 'pages/home';
+@use 'pages/ui-kit';
