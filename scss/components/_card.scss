@@ -68,4 +68,31 @@
     font-size: 0.75rem;
     font-weight: $fw-bold;
   }
+
+  // Скелет картки під час завантаження: сірі смуги з анімацією «мерехтіння»
+  &--skeleton {
+    pointer-events: none;
+
+    .card__image,
+    .card__line {
+      background: linear-gradient(90deg, var(--color-bg-alt) 25%, var(--color-border) 50%, var(--color-bg-alt) 75%);
+      background-size: 200% 100%;
+      animation: skeleton-shimmer 1.2s ease-in-out infinite;
+    }
+  }
+
+  &__line {
+    height: 14px;
+    margin-bottom: $space;
+    border-radius: $radius;
+
+    &--short {
+      width: 60%;
+    }
+  }
+}
+
+@keyframes skeleton-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
 }

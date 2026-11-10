@@ -2,14 +2,22 @@
 import { categories, podcasts, episodes } from './data/catalog.js';
 import { Store } from './services/store.js';
 import { renderList, renderCategoryTags } from './ui/renderList.js';
+import { renderSkeleton, renderError } from './ui/renderStatus.js';
 import { renderDetails } from './ui/renderDetails.js';
 import { openModal, bindModal } from './ui/modal.js';
 import { showErrors, clearFieldError } from './ui/formErrors.js';
 import { validateSuggestion } from './utils/validate.js';
 import { formatDuration, escapeHtml } from './utils/format.js';
 
-const store = new Store({ episodes, podcasts, categories });
-const counts = store.countByCategory();
+// Сховище з'являється лише після завантаження даних
+let store = null;
+let counts = {};
+let existingTitles = [];
+
+// Джерело даних: поки що заглушка, але вже асинхронно — як буде з мережею
+async function loadCatalog() {
+  return { episodes, podcasts, categories };
+}
 
 const els = {
   search: document.querySelector('#catalog-search'),
@@ -25,7 +33,8 @@ const els = {
 };
 
 // Увесь стан інтерфейсу — в одному об'єкті; змінюється лише заміною на новий об'єкт
-let state = { query: '', category: null, sort: 'title', favorites: [] };
+// status: 'idle' → 'loading' → 'success' | 'error'
+let state = { status: 'idle', error: null, query: '', category: null, sort: 'title', favorites: [] };
 
 function setState(patch) {
   state = { ...state, ...patch };
@@ -43,6 +52,18 @@ function visibleEpisodes() {
 
 // Одна функція перемальовування для будь-якої зміни стану
 function update() {
+  if (state.status === 'loading') {
+    els.list.innerHTML = renderSkeleton();
+    els.tags.innerHTML = '';
+    els.summary.textContent = 'Завантаження каталогу…';
+    return;
+  }
+  if (state.status === 'error') {
+    els.list.innerHTML = renderError(state.error);
+    els.tags.innerHTML = '';
+    els.summary.textContent = '';
+    return;
+  }
   const list = visibleEpisodes();
   els.list.innerHTML = renderList(list, state.favorites);
   els.tags.innerHTML = renderCategoryTags(store.categories, counts, state.category);
@@ -73,6 +94,7 @@ els.list.addEventListener('click', (event) => {
   const { action, id } = button.dataset;
   if (action === 'open') openDetails(Number(id), button);
   if (action === 'favorite') toggleFavorite(Number(id));
+  if (action === 'retry') load();
 });
 
 function toggleFavorite(id) {
@@ -92,8 +114,7 @@ function openDetails(id, button) {
   openModal(els.modal, button);
 }
 
-// Форма «Запропонувати подкаст»
-const existingTitles = podcasts.map((p) => p.title);
+// Форма «Запропонувати подкаст» (перелік наявних назв береться із завантажених даних)
 
 els.form.addEventListener('submit', (event) => {
   event.preventDefault();                                  // без перезавантаження сторінки
@@ -119,5 +140,20 @@ els.form.addEventListener('submit', (event) => {
 els.form.addEventListener('input', (event) => clearFieldError(event.target));
 els.form.addEventListener('change', (event) => clearFieldError(event.target));
 
-update();
-console.log('countByCategory():', counts);
+// Завантаження даних з трьома станами інтерфейсу
+async function load() {
+  setState({ status: 'loading', error: null });
+  try {
+    const catalog = await loadCatalog();
+    store = new Store(catalog);
+    counts = store.countByCategory();
+    existingTitles = catalog.podcasts.map((p) => p.title);
+    setState({ status: 'success' });
+    console.log('countByCategory():', counts);
+  } catch (error) {
+    console.error('Помилка завантаження каталогу:', error);
+    setState({ status: 'error', error });
+  }
+}
+
+load();
