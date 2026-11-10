@@ -3,47 +3,86 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Наскрізний проєкт — Вебтехнології та вебдизайн</title>
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      max-width: 700px;
-      margin: 60px auto;
-      padding: 0 20px;
-      line-height: 1.6;
-      color: #222;
-    }
-    h1 { font-size: 28px; margin-bottom: 8px; }
-    .subtitle { color: #666; margin-bottom: 32px; }
-    .author { margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; color: #555; }
-  </style>
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      max-width: 700px;
-      margin: 60px auto;
-      padding: 0 20px;
-      line-height: 1.6;
-      color: #222;
-    }
-    h1 { font-size: 28px; margin-bottom: 8px; }
-    .subtitle { color: #666; margin-bottom: 32px; }
-    .author { margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; color: #555; }
-  </style>
+  <title>Хвиля — подкасти, які можна читати</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <h1>Наскрізний проєкт з вебтехнологій</h1>
-  <p class="subtitle">Сторінка-заглушка майбутнього застосунку</p>
+  <header class="header">
+    <div class="container header-inner">
+      <a class="logo" href="#">Хвиля</a>
+      <nav class="nav">
+        <a class="nav-link" href="#">Каталог</a>
+        <a class="nav-link" href="#">Пошук</a>
+        <a class="nav-link" href="#">Вибране</a>
+        <a class="nav-btn" href="#">Увійти</a>
+      </nav>
+    </div>
+  </header>
 
-  <p>
-    Це початковий каркас навчального проєкту, який розроблятиметься
-    протягом семестру. Застосунок будуватиметься на стеку React (клієнтська
-    частина), PHP (серверна логіка) та MySQL (база даних). Тему проєкту
-    буде визначено на практичній роботі №2.
-  </p>
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Подкасти, які можна читати</h1>
+        <p class="hero-text">Україномовні подкасти з текстовою розшифровкою кожного випуску. Знайдіть потрібний фрагмент за словом — і слухайте саме з цього місця.</p>
+        <form class="search" action="#">
+          <input class="search-input" type="search" placeholder="Наприклад: стипендія, нейромережі, історія Рівного">
+          <button class="search-btn" type="submit">Знайти</button>
+        </form>
+      </div>
+    </section>
 
-  <p class="author">
-    Автор: Хорошилова Анна, група 5-ІПБ
-  </p>
+    <section class="section">
+      <div class="container">
+        <h2>Категорії</h2>
+        <div class="tags">
+          <a class="tag" href="#">Освіта</a>
+          <a class="tag" href="#">Наука</a>
+          <a class="tag" href="#">Технології</a>
+          <a class="tag" href="#">Історія</a>
+          <a class="tag" href="#">Психологія</a>
+          <a class="tag" href="#">Кар'єра</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>Нові випуски</h2>
+        <div class="cards">
+          <article class="card">
+            <div class="card-cover">#41</div>
+            <h3 class="card-title">Як отримати стипендію і не втратити її після першої сесії</h3>
+            <p class="card-podcast">Студентський ефір</p>
+            <p class="card-text">Говоримо з представницею студради про рейтинг, соціальні стипендії та типові помилки першокурсників, через які гроші перестають надходити вже після зимової сесії.</p>
+            <div class="card-meta"><span>42 хв</span><a class="card-btn" href="#">Слухати</a></div>
+          </article>
+          <article class="card">
+            <div class="card-cover">#17</div>
+            <h3 class="card-title">Нейромережі простими словами</h3>
+            <p class="card-podcast">Код без кави</p>
+            <p class="card-text">Що насправді відбувається всередині нейромережі, чому вона помиляється і як навчити просту модель розпізнавати рукописні цифри на звичайному ноутбуці.</p>
+            <div class="card-meta"><span>55 хв</span><a class="card-btn" href="#">Слухати</a></div>
+          </article>
+          <article class="card">
+            <div class="card-cover">#08</div>
+            <h3 class="card-title">Рівне, якого вже немає: вулиці та будинки XIX століття</h3>
+            <p class="card-podcast">Місто говорить</p>
+            <p class="card-text">Історик розповідає, як виглядала головна вулиця міста до війни, що стояло на місці сучасних кварталів і які будинки можна побачити й сьогодні.</p>
+            <div class="card-meta"><span>38 хв</span><a class="card-btn" href="#">Слухати</a></div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p class="footer-text">© 2026 «Хвиля» — навчальний проєкт з дисципліни «Вебтехнології та вебдизайн».<br>Автор: Хорошилова Анна, група 5-ІПБ</p>
+      <nav class="footer-nav">
+        <a class="footer-link" href="https://github.com/AnnaKhoro/webproject-khoroshylova">Репозиторій</a>
+        <a class="footer-link" href="docs/tz.md">Технічне завдання</a>
+      </nav>
+    </div>
+  </footer>
 </body>
 </html>
