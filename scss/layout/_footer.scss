@@ -1,0 +1,37 @@
+// Підвал сайту
+
+.footer {
+  margin-top: 32px;
+  padding: 24px 0;
+  background: #1f2933;
+  color: #e5e7eb;
+  font-size: 0.875rem;
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer-nav {
+  display: flex;
+  gap: 16px;
+}
+
+.footer-link {
+  color: #f0a202;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .footer-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

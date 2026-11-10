@@ -1,0 +1,19 @@
+// Головний файл стилів «Хвилі»: лише підключення партіалів у порядку каскаду
+
+// 1. abstracts — змінні та міксини (не дають CSS на виході)
+@use 'abstracts/variables' as *;
+@use 'abstracts/mixins' as *;
+
+// 2. base — скидання стилів і типографіка
+@use 'base/reset';
+@use 'base/typography';
+
+// 3. layout — каркас сторінки
+@use 'layout/container';
+@use 'layout/header';
+@use 'layout/footer';
+
+// 4. components — заповниться на ПР4
+
+// 5. pages — правила конкретних сторінок
+@use 'pages/home';

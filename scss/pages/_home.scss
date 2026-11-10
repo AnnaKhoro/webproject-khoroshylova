@@ -1,104 +1,5 @@
-/* Стилі сторінки «Хвиля» (один файл) */
+// Головна сторінка: головний блок, категорії, картки випусків
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
-  color: #1f2933;
-  background: #ffffff;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-h1 {
-  font-size: 1.75rem;
-  line-height: 1.25;
-  margin-bottom: 16px;
-}
-
-h2 {
-  font-size: 1.25rem;
-  margin-bottom: 16px;
-}
-
-h3 {
-  font-size: 1rem;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 16px;
-}
-
-/* Шапка */
-.header {
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.header-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.logo {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #1d4e89;
-}
-
-.nav {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-}
-
-.nav-link {
-  color: #6b7280;
-  transition: color 0.2s ease;
-}
-
-.nav-link:hover {
-  color: #1d4e89;
-}
-
-.nav-btn {
-  padding: 8px 16px;
-  border-radius: 8px;
-  background: #1d4e89;
-  color: #ffffff;
-  transition: background 0.2s ease;
-}
-
-.nav-btn:hover {
-  background: #163d6b;
-}
-
-@media (min-width: 768px) {
-  .header-inner {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-}
-
-/* Головний блок */
 .hero {
   padding: 40px 0;
   background: #f5f7fa;
@@ -150,7 +51,6 @@ h3 {
   }
 }
 
-/* Секції */
 .section {
   padding: 32px 0;
 }
@@ -173,7 +73,6 @@ h3 {
   border-color: #1d4e89;
 }
 
-/* Картки випусків */
 .cards {
   display: grid;
   grid-template-columns: 1fr;
@@ -258,42 +157,5 @@ h3 {
 @media (min-width: 1200px) {
   .cards {
     grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* Підвал */
-.footer {
-  margin-top: 32px;
-  padding: 24px 0;
-  background: #1f2933;
-  color: #e5e7eb;
-  font-size: 0.875rem;
-}
-
-.footer-inner {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.footer-nav {
-  display: flex;
-  gap: 16px;
-}
-
-.footer-link {
-  color: #f0a202;
-  transition: color 0.2s ease;
-}
-
-.footer-link:hover {
-  color: #ffffff;
-}
-
-@media (min-width: 768px) {
-  .footer-inner {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
   }
 }
