@@ -16,6 +16,8 @@
 
 // 4. components — UI-кіт за БЕМ
 @use 'components/button';
+@use 'components/form';
+@use 'components/card';
 
 // 5. pages — правила конкретних сторінок
 @use 'pages/home';

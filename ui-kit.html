@@ -39,6 +39,50 @@
         <button class="button button--secondary button--small" type="button" disabled>Недоступно</button>
       </div>
     </section>
+
+    <section class="kit__section" id="field">
+      <h2>Поле форми — field</h2>
+      <p class="kit__caption">Елементи __label, __input, __hint, __error; модифікатори --invalid і --disabled. Підпис пов'язаний з полем через for / id; помилка має значок і текст.</p>
+      <div class="kit__grid">
+        <div class="field">
+          <label class="field__label" for="kit-name">Ім'я</label>
+          <input class="field__input" id="kit-name" type="text" placeholder="Анна">
+          <span class="field__hint">Так вас бачитимуть інші слухачі</span>
+        </div>
+        <div class="field field--invalid">
+          <label class="field__label" for="kit-email">Email</label>
+          <input class="field__input" id="kit-email" type="email" value="anna@" aria-invalid="true" aria-describedby="kit-email-error">
+          <span class="field__error" id="kit-email-error">Введіть email у форматі name@example.com</span>
+        </div>
+        <div class="field field--disabled">
+          <label class="field__label" for="kit-role">Роль</label>
+          <input class="field__input" id="kit-role" type="text" value="Слухач" disabled>
+          <span class="field__hint">Змінити роль може лише адміністратор</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="kit__section" id="card">
+      <h2>Картка — card</h2>
+      <p class="kit__caption">Елементи __image, __title, __subtitle, __text, __footer, __badge; модифікатор --featured. Відступи між картками задає контейнер kit__grid, а не сама картка.</p>
+      <div class="kit__grid">
+          <article class="card">
+            <div class="card__image" aria-hidden="true">#41</div>
+            <h3 class="card__title">Як отримати стипендію і не втратити її після першої сесії</h3>
+            <p class="card__subtitle">Студентський ефір</p>
+            <p class="card__text">Говоримо з представницею студради про рейтинг, соціальні стипендії та типові помилки першокурсників, через які гроші перестають надходити вже після зимової сесії.</p>
+            <div class="card__footer"><span>42 хв</span><a class="button button--primary button--small" href="#">Слухати</a></div>
+          </article>
+          <article class="card card--featured">
+            <span class="card__badge">Вибір редакції</span>
+            <div class="card__image" aria-hidden="true">#17</div>
+            <h3 class="card__title">Нейромережі простими словами</h3>
+            <p class="card__subtitle">Код без кави</p>
+            <p class="card__text">Що насправді відбувається всередині нейромережі, чому вона помиляється і як навчити просту модель розпізнавати рукописні цифри на звичайному ноутбуці.</p>
+            <div class="card__footer"><span>55 хв</span><a class="button button--primary button--small" href="#">Слухати</a></div>
+          </article>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
