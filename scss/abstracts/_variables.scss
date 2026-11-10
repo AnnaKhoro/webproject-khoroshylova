@@ -1,1 +1,40 @@
-// Змінні проєкту (заповнюються на наступному кроці)
+// Змінні проєкту «Хвиля». Імена описують призначення, а не вигляд.
+
+// Кольори
+$color-primary:       #1d4e89;  // фірмовий колір: логотип, кнопки, посилання
+$color-primary-hover: #163d6b;  // стан наведення на основну кнопку
+$color-secondary:     #f0a202;  // акцент: назва подкасту, посилання в підвалі
+$color-text:          #1f2933;  // основний текст
+$color-muted:         #6b7280;  // другорядний текст
+$color-bg:            #ffffff;  // фон сторінки й карток
+$color-bg-alt:        #f5f7fa;  // фон головного блоку
+$color-border:        #e5e7eb;  // рамки й роздільники
+$color-on-primary:    #ffffff;  // текст на фірмовому кольорі
+$color-footer-bg:     $color-text;
+$color-footer-text:   $color-border;
+
+// Типографіка
+$font-base:    'Inter', system-ui, sans-serif;
+$fs-base:      16px;
+$fs-sm:        0.875rem;
+$fs-md:        1rem;
+$fs-lg:        1.25rem;
+$fs-xl:        1.75rem;
+$fs-xxl:       2.25rem;
+$lh-base:      1.6;
+$lh-heading:   1.25;
+$fw-semibold:  600;
+$fw-bold:      700;
+
+// Розміри та ефекти
+$space:            8px;   // базовий крок відступів, решта — кратні йому
+$radius:           8px;
+$radius-pill:      999px;
+$container-width:  1200px;
+$content-width:    640px;  // ширина текстового блоку й поля пошуку
+$shadow:           0 4px 12px rgba(0, 0, 0, 0.12);
+$transition:       0.2s ease;
+
+// Точки адаптивності
+$bp-tablet:  768px;
+$bp-desktop: 1200px;

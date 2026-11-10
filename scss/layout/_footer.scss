@@ -1,34 +1,35 @@
 // Підвал сайту
+@use '../abstracts/variables' as *;
 
 .footer {
-  margin-top: 32px;
-  padding: 24px 0;
-  background: #1f2933;
-  color: #e5e7eb;
-  font-size: 0.875rem;
+  margin-top: $space * 4;
+  padding: $space * 3 0;
+  background: $color-footer-bg;
+  color: $color-footer-text;
+  font-size: $fs-sm;
 }
 
 .footer-inner {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: $space * 2;
 }
 
 .footer-nav {
   display: flex;
-  gap: 16px;
+  gap: $space * 2;
 }
 
 .footer-link {
-  color: #f0a202;
-  transition: color 0.2s ease;
+  color: $color-secondary;
+  transition: color $transition;
 }
 
 .footer-link:hover {
-  color: #ffffff;
+  color: $color-on-primary;
 }
 
-@media (min-width: 768px) {
+@media (min-width: $bp-tablet) {
   .footer-inner {
     flex-direction: row;
     justify-content: space-between;

@@ -1,8 +1,9 @@
 // Шапка сайту
+@use '../abstracts/variables' as *;
 
 .header {
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
+  background: $color-bg;
+  border-bottom: 1px solid $color-border;
 }
 
 .header-inner {
@@ -10,15 +11,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  gap: $space;
+  padding-top: $space * 2;
+  padding-bottom: $space * 2;
 }
 
 .logo {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #1d4e89;
+  font-size: $fs-lg;
+  font-weight: $fw-bold;
+  color: $color-primary;
 }
 
 .nav {
@@ -26,31 +27,31 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: $space * 2;
 }
 
 .nav-link {
-  color: #6b7280;
-  transition: color 0.2s ease;
+  color: $color-muted;
+  transition: color $transition;
 }
 
 .nav-link:hover {
-  color: #1d4e89;
+  color: $color-primary;
 }
 
 .nav-btn {
-  padding: 8px 16px;
-  border-radius: 8px;
-  background: #1d4e89;
-  color: #ffffff;
-  transition: background 0.2s ease;
+  padding: $space $space * 2;
+  border-radius: $radius;
+  background: $color-primary;
+  color: $color-on-primary;
+  transition: background $transition;
 }
 
 .nav-btn:hover {
-  background: #163d6b;
+  background: $color-primary-hover;
 }
 
-@media (min-width: 768px) {
+@media (min-width: $bp-tablet) {
   .header-inner {
     flex-direction: row;
     justify-content: space-between;

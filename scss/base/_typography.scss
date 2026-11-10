@@ -1,24 +1,25 @@
 // Базова типографіка
+@use '../abstracts/variables' as *;
 
 body {
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
-  color: #1f2933;
-  background: #ffffff;
+  font-family: $font-base;
+  font-size: $fs-base;
+  line-height: $lh-base;
+  color: $color-text;
+  background: $color-bg;
 }
 
 h1 {
-  font-size: 1.75rem;
-  line-height: 1.25;
-  margin-bottom: 16px;
+  font-size: $fs-xl;
+  line-height: $lh-heading;
+  margin-bottom: $space * 2;
 }
 
 h2 {
-  font-size: 1.25rem;
-  margin-bottom: 16px;
+  font-size: $fs-lg;
+  margin-bottom: $space * 2;
 }
 
 h3 {
-  font-size: 1rem;
+  font-size: $fs-md;
 }
