@@ -4,8 +4,8 @@
 
 .hero {
   padding: $space * 5 0;
-  background: $color-bg-alt;
-  border-bottom: 1px solid $color-border;
+  background: var(--color-bg-alt);
+  border-bottom: 1px solid var(--color-border);
 
   @include respond-to(tablet) {
     padding: $space * 8 0;
@@ -13,7 +13,7 @@
 
   &__text {
     max-width: $content-width;
-    color: $color-muted;
+    color: var(--color-muted);
     margin-bottom: $space * 3;
   }
 }
@@ -27,9 +27,9 @@
     flex: 1;
     padding: $space $space * 2;
     font: inherit;
-    color: $color-text;
-    background: $color-surface;
-    border: 1px solid $color-border;
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
     border-radius: $radius;
 
     @include focus-ring(1px);

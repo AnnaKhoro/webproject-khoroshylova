@@ -3,8 +3,8 @@
 @use '../abstracts/mixins' as *;
 
 .header {
-  background: $color-bg;
-  border-bottom: 1px solid $color-border;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
 
   &__inner {
     @include flex-center(column);
@@ -21,7 +21,7 @@
   &__logo {
     font-size: $fs-lg;
     font-weight: $fw-bold;
-    color: $color-primary;
+    color: var(--color-primary);
 
     @include focus-ring;
   }
