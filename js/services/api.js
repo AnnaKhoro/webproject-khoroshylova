@@ -27,7 +27,8 @@ async function request(path, params = {}) {
   const query = new URLSearchParams(params).toString();
   const response = await fetch(`${BASE_URL}${path}?${query}`);
   if (!response.ok) {
-    throw new Error(`HTTP ${response.status}: ${response.statusText || 'помилка сервера'}`);
+    // statusText буває порожнім (HTTP/2 не передає текстовий опис), тому додаємо його лише за наявності
+    throw new Error(`HTTP ${response.status}${response.statusText ? `: ${response.statusText}` : ''}`);
   }
   return response.json();
 }

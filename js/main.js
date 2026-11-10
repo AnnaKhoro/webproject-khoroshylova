@@ -1,6 +1,6 @@
 // Точка входу сторінки каталогу: зберігає стан інтерфейсу, обробляє події й перемальовує перелік
-import { categories, podcasts, episodes } from './data/catalog.js';
 import { Store } from './services/store.js';
+import { getCatalog } from './services/api.js';
 import { renderList, renderCategoryTags } from './ui/renderList.js';
 import { renderSkeleton, renderError } from './ui/renderStatus.js';
 import { renderDetails } from './ui/renderDetails.js';
@@ -14,10 +14,8 @@ let store = null;
 let counts = {};
 let existingTitles = [];
 
-// Джерело даних: поки що заглушка, але вже асинхронно — як буде з мережею
-async function loadCatalog() {
-  return { episodes, podcasts, categories };
-}
+// Джерело даних — публічне API (services/api.js); заглушка data/catalog.js більше не імпортується
+const loadCatalog = getCatalog;
 
 const els = {
   search: document.querySelector('#catalog-search'),

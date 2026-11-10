@@ -8,7 +8,7 @@ export function renderDetails(episode) {
   return `
     <h3 class="modal__title" id="episode-modal-title">${escapeHtml(episode.title)}</h3>
     <p class="card__subtitle">${escapeHtml(episode.podcastTitle)} · ${escapeHtml(episode.category)}</p>
-    <p>${escapeHtml(episode.description)}</p>
+    <p class="modal__text">${escapeHtml(episode.description)}</p>
     <p class="card__text">Тривалість: ${episode.duration} · опубліковано ${formatDate(episode.publishedAt)}${episode.isNew() ? ' · новий випуск' : ''}</p>
     ${note}`;
 }

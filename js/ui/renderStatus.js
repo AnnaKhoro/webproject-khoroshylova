@@ -15,11 +15,15 @@ export function renderSkeleton(count = 6) {
 
 // Помилка: що сталося, технічна причина й кнопка повтору (data-action="retry")
 export function renderError(error) {
+  // сервер відповів кодом помилки — чи запит узагалі не дійшов (немає мережі, CORS)
+  const advice = error.message.startsWith('HTTP')
+    ? 'Сервер каталогу відповів помилкою. Спробуйте ще раз трохи пізніше.'
+    : 'Перевірте підключення до інтернету й спробуйте ще раз.';
   return `
     <div class="alert alert--error" role="alert">
       <span class="alert__icon" aria-hidden="true">✕</span>
       <span class="alert__text">
-        <b>Не вдалося завантажити каталог.</b> Перевірте підключення до інтернету й спробуйте ще раз.
+        <b>Не вдалося завантажити каталог.</b> ${advice}
         <br><small>Причина: ${escapeHtml(error.message)}</small>
         <br><button class="button button--secondary button--small" type="button" data-action="retry">Спробувати ще раз</button>
       </span>
