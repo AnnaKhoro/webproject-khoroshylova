@@ -17,7 +17,7 @@ const els = {
 };
 
 // Увесь стан інтерфейсу — в одному об'єкті; змінюється лише заміною на новий об'єкт
-let state = { query: '', category: null, sort: 'title' };
+let state = { query: '', category: null, sort: 'title', favorites: [] };
 
 function setState(patch) {
   state = { ...state, ...patch };
@@ -36,7 +36,7 @@ function visibleEpisodes() {
 // Одна функція перемальовування для будь-якої зміни стану
 function update() {
   const list = visibleEpisodes();
-  els.list.innerHTML = renderList(list);
+  els.list.innerHTML = renderList(list, state.favorites);
   els.tags.innerHTML = renderCategoryTags(store.categories, counts, state.category);
   els.summary.textContent =
     `Знайдено випусків: ${list.length} із ${store.all().length}, загальна тривалість ${formatDuration(Store.totalDuration(list))}`;
@@ -56,6 +56,29 @@ els.tags.addEventListener('click', (event) => {
 });
 
 els.sort.addEventListener('change', (event) => setState({ sort: event.target.value }));
+
+// Делегування: ОДИН обробник на контейнері каталогу обслуговує кнопки всіх карток,
+// зокрема тих, що з'являться після перемальовування переліку
+els.list.addEventListener('click', (event) => {
+  const button = event.target.closest('[data-action]');
+  if (!button) return;                       // клік повз кнопки — нічого не робимо
+  const { action, id } = button.dataset;
+  if (action === 'open') openDetails(Number(id), button);
+  if (action === 'favorite') toggleFavorite(Number(id));
+});
+
+function toggleFavorite(id) {
+  const favorites = state.favorites.includes(id)
+    ? state.favorites.filter((favId) => favId !== id)
+    : [...state.favorites, id];
+  setState({ favorites });
+  els.list.querySelector(`[data-action="favorite"][data-id="${id}"]`)?.focus();
+}
+
+function openDetails(id) {
+  const episode = store.byId(id);
+  console.log('Відкрити випуск:', episode.id, episode.title);
+}
 
 update();
 console.log('countByCategory():', counts);

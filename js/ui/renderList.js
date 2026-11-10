@@ -3,7 +3,7 @@ import { renderCard } from './renderCard.js';
 import { escapeHtml } from '../utils/format.js';
 
 // map перетворює кожен випуск на рядок розмітки, join('') склеює їх в один рядок
-export function renderList(episodes) {
+export function renderList(episodes, favorites = []) {
   if (episodes.length === 0) {
     return `
       <div class="alert alert--warning" role="status">
@@ -11,7 +11,7 @@ export function renderList(episodes) {
         <span class="alert__text"><b>Нічого не знайдено.</b> Спробуйте інше слово або виберіть іншу категорію.</span>
       </div>`;
   }
-  return episodes.map((episode) => renderCard(episode)).join('');
+  return episodes.map((episode) => renderCard(episode, favorites.includes(episode.id))).join('');
 }
 
 // Кнопки категорій з кількістю випусків; поточна позначена модифікатором tag--active і aria-pressed

@@ -1,7 +1,7 @@
 // Розмітка картки випуску з класів UI-кіту (ПР4). Повертає рядок, у DOM нічого не вставляє.
 import { escapeHtml, formatDate } from '../utils/format.js';
 
-export function renderCard(episode) {
+export function renderCard(episode, isFavorite = false) {
   const featured = episode.isFeatured === true;
   const badge = featured ? '<span class="card__badge">Вибір редакції</span>' : '';
   const isNew = episode.isNew() ? ' · <b>новий</b>' : '';
@@ -15,6 +15,7 @@ export function renderCard(episode) {
       <p class="card__text">${escapeHtml(episode.description)}</p>
       <p class="card__text">${episode.duration} · ${formatDate(episode.publishedAt)}${isNew}</p>
       <div class="card__footer">
+          <button class="button button--ghost button--small" type="button" data-action="favorite" data-id="${episode.id}" aria-pressed="${isFavorite}">${isFavorite ? '★ У вибраному' : '☆ У вибране'}</button>
           <button class="button button--primary button--small" type="button" data-action="open" data-id="${episode.id}">Детальніше</button>
       </div>
     </article>`;
