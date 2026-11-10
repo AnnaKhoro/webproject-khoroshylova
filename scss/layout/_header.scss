@@ -1,19 +1,22 @@
 // Шапка сайту
 @use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
 
 .header {
   background: $color-bg;
   border-bottom: 1px solid $color-border;
-}
 
-.header-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: $space;
-  padding-top: $space * 2;
-  padding-bottom: $space * 2;
+  &-inner {
+    @include flex-center(column);
+    gap: $space;
+    padding-top: $space * 2;
+    padding-bottom: $space * 2;
+
+    @include respond-to(tablet) {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
 }
 
 .logo {
@@ -23,37 +26,19 @@
 }
 
 .nav {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  @include flex-center;
   gap: $space * 2;
-}
 
-.nav-link {
-  color: $color-muted;
-  transition: color $transition;
-}
+  &-link {
+    color: $color-muted;
+    transition: color $transition;
 
-.nav-link:hover {
-  color: $color-primary;
-}
+    &:hover {
+      color: $color-primary;
+    }
+  }
 
-.nav-btn {
-  padding: $space $space * 2;
-  border-radius: $radius;
-  background: $color-primary;
-  color: $color-on-primary;
-  transition: background $transition;
-}
-
-.nav-btn:hover {
-  background: $color-primary-hover;
-}
-
-@media (min-width: $bp-tablet) {
-  .header-inner {
-    flex-direction: row;
-    justify-content: space-between;
+  &-btn {
+    @include button-primary;
   }
 }

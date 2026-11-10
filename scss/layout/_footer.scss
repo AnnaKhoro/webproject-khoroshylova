@@ -1,5 +1,6 @@
 // Підвал сайту
 @use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
 
 .footer {
   margin-top: $space * 4;
@@ -7,32 +8,30 @@
   background: $color-footer-bg;
   color: $color-footer-text;
   font-size: $fs-sm;
-}
 
-.footer-inner {
-  display: flex;
-  flex-direction: column;
-  gap: $space * 2;
-}
+  &-inner {
+    display: flex;
+    flex-direction: column;
+    gap: $space * 2;
 
-.footer-nav {
-  display: flex;
-  gap: $space * 2;
-}
+    @include respond-to(tablet) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
 
-.footer-link {
-  color: $color-secondary;
-  transition: color $transition;
-}
+  &-nav {
+    display: flex;
+    gap: $space * 2;
+  }
 
-.footer-link:hover {
-  color: $color-on-primary;
-}
+  &-link {
+    color: $color-secondary;
+    transition: color $transition;
 
-@media (min-width: $bp-tablet) {
-  .footer-inner {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    &:hover {
+      color: $color-on-primary;
+    }
   }
 }

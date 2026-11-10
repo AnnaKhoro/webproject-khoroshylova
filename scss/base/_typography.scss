@@ -1,5 +1,6 @@
 // Базова типографіка
 @use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
 
 body {
   font-family: $font-base;
@@ -13,6 +14,10 @@ h1 {
   font-size: $fs-xl;
   line-height: $lh-heading;
   margin-bottom: $space * 2;
+
+  @include respond-to(tablet) {
+    font-size: $fs-xxl;
+  }
 }
 
 h2 {
