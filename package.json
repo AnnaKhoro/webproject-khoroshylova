@@ -5,7 +5,8 @@
   "scripts": {
     "css": "sass scss/main.scss css/main.css --watch --style=expanded",
     "build:css": "sass scss/main.scss css/main.css --style=compressed --no-source-map",
-    "check:store": "node scripts/check-store.js"
+    "check:store": "node scripts/check-store.js",
+    "check:api": "node scripts/check-api.js"
   },
   "repository": {
     "type": "git",
