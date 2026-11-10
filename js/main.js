@@ -2,6 +2,8 @@
 import { categories, podcasts, episodes } from './data/catalog.js';
 import { Store } from './services/store.js';
 import { renderList, renderCategoryTags } from './ui/renderList.js';
+import { renderDetails } from './ui/renderDetails.js';
+import { openModal, bindModal } from './ui/modal.js';
 import { formatDuration } from './utils/format.js';
 
 const store = new Store({ episodes, podcasts, categories });
@@ -14,6 +16,8 @@ const els = {
   tags: document.querySelector('#catalog-tags'),
   list: document.querySelector('#catalog'),
   summary: document.querySelector('#catalog-summary'),
+  modal: document.querySelector('#episode-modal'),
+  modalContent: document.querySelector('#episode-modal-content'),
 };
 
 // Увесь стан інтерфейсу — в одному об'єкті; змінюється лише заміною на новий об'єкт
@@ -75,9 +79,13 @@ function toggleFavorite(id) {
   els.list.querySelector(`[data-action="favorite"][data-id="${id}"]`)?.focus();
 }
 
-function openDetails(id) {
+bindModal(els.modal);
+
+function openDetails(id, button) {
   const episode = store.byId(id);
-  console.log('Відкрити випуск:', episode.id, episode.title);
+  if (!episode) return;
+  els.modalContent.innerHTML = renderDetails(episode);
+  openModal(els.modal, button);
 }
 
 update();
