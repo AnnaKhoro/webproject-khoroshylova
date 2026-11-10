@@ -1,0 +1,65 @@
+// Ескіз структури БД застосунку «Хвиля» (ПР2). Вставити на dbdiagram.io для перегляду.
+// Повне проєктування з типами й нормалізацією — ПР15.
+
+Table users {
+  id int [pk, increment]
+  name varchar
+  email varchar [unique]
+  password_hash varchar
+  role enum('user', 'admin')
+  avatar varchar
+  is_blocked bool
+  created_at datetime
+}
+
+Table categories {
+  id int [pk, increment]
+  name varchar [unique]
+  slug varchar [unique]
+}
+
+Table podcasts {
+  id int [pk, increment]
+  category_id int [ref: > categories.id]
+  title varchar
+  author_name varchar
+  description text
+  cover varchar
+  created_at datetime
+}
+
+Table episodes {
+  id int [pk, increment]
+  podcast_id int [ref: > podcasts.id]
+  title varchar
+  description text
+  audio_url varchar
+  duration_sec int
+  published_at datetime
+}
+
+Table transcript_segments {
+  id int [pk, increment]
+  episode_id int [ref: > episodes.id]
+  start_sec int
+  text text
+}
+
+Table favorites {
+  user_id int [ref: > users.id]
+  episode_id int [ref: > episodes.id]
+  created_at datetime
+  indexes {
+    (user_id, episode_id) [pk]
+  }
+}
+
+Table comments {
+  id int [pk, increment]
+  episode_id int [ref: > episodes.id]
+  user_id int [ref: > users.id]
+  body text
+  is_hidden bool
+  created_at datetime
+  updated_at datetime
+}
