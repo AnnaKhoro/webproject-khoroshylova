@@ -1,4 +1,4 @@
-// Шапка сайту
+// Шапка сайту (навігація — компонент .nav)
 @use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
@@ -6,7 +6,7 @@
   background: $color-bg;
   border-bottom: 1px solid $color-border;
 
-  &-inner {
+  &__inner {
     @include flex-center(column);
     gap: $space;
     padding-top: $space * 2;
@@ -17,24 +17,18 @@
       justify-content: space-between;
     }
   }
-}
 
-.logo {
-  font-size: $fs-lg;
-  font-weight: $fw-bold;
-  color: $color-primary;
-}
+  &__logo {
+    font-size: $fs-lg;
+    font-weight: $fw-bold;
+    color: $color-primary;
 
-.nav {
-  @include flex-center;
-  gap: $space * 2;
+    @include focus-ring;
+  }
 
-  &-link {
-    color: $color-muted;
-    transition: color $transition;
-
-    &:hover {
-      color: $color-primary;
-    }
+  &__actions {
+    @include flex-center;
+    flex-wrap: wrap;
+    gap: $space * 2;
   }
 }

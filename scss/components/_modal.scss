@@ -1,0 +1,70 @@
+// Модальне вікно: .modal з елементами overlay / window / title / close / actions і модифікатором --open
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: $space * 2;
+
+  &--open {
+    display: flex;
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--color-overlay);
+  }
+
+  &__window {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: $space * 2;
+    width: 100%;
+    max-width: 480px;
+    padding: $space * 3;
+    border-radius: $radius;
+    background: var(--color-surface);
+    color: var(--color-text);
+    box-shadow: $shadow-lg;
+  }
+
+  &__title {
+    padding-right: $space * 5;
+    font-size: $fs-lg;
+  }
+
+  &__close {
+    position: absolute;
+    top: $space;
+    right: $space;
+    @include flex-center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: $radius;
+    background: transparent;
+    color: var(--color-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+
+    @include focus-ring;
+
+    &:hover {
+      background: var(--color-primary-soft);
+      color: var(--color-text);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $space;
+  }
+}

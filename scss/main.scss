@@ -18,6 +18,10 @@
 @use 'components/button';
 @use 'components/form';
 @use 'components/card';
+@use 'components/nav';
+@use 'components/modal';
+@use 'components/alert';
+@use 'components/tag';
 
 // 5. pages — правила конкретних сторінок
 @use 'pages/home';

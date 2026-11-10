@@ -8,14 +8,18 @@
 </head>
 <body>
   <header class="header">
-    <div class="container header-inner">
-      <a class="logo" href="index.html">Хвиля</a>
-      <nav class="nav">
-        <a class="nav-link" href="#">Каталог</a>
-        <a class="nav-link" href="#">Пошук</a>
-        <a class="nav-link" href="#">Вибране</a>
+    <div class="container header__inner">
+      <a class="header__logo" href="index.html">Хвиля</a>
+      <div class="header__actions">
+        <nav class="nav" aria-label="Основна навігація">
+        <a class="nav__link nav__link--active" href="index.html" aria-current="page">Головна</a>
+        <a class="nav__link" href="#">Каталог</a>
+        <a class="nav__link" href="#">Пошук</a>
+        <a class="nav__link" href="#">Вибране</a>
+        <a class="nav__link" href="ui-kit.html">UI-кіт</a>
+        </nav>
         <a class="button button--primary button--small" href="#">Увійти</a>
-      </nav>
+      </div>
     </div>
   </header>
 
@@ -23,9 +27,10 @@
     <section class="hero">
       <div class="container">
         <h1>Подкасти, які можна читати</h1>
-        <p class="hero-text">Україномовні подкасти з текстовою розшифровкою кожного випуску. Знайдіть потрібний фрагмент за словом — і слухайте саме з цього місця.</p>
+        <p class="hero__text">Україномовні подкасти з текстовою розшифровкою кожного випуску. Знайдіть потрібний фрагмент за словом — і слухайте саме з цього місця.</p>
         <form class="search" action="#" role="search">
-          <input class="search-input" type="search" placeholder="Наприклад: стипендія, нейромережі, історія Рівного">
+          <label class="visually-hidden" for="search-query">Пошук за розшифровками</label>
+          <input class="search__input" id="search-query" type="search" placeholder="Наприклад: стипендія, нейромережі, історія Рівного">
           <button class="button button--primary" type="submit">Знайти</button>
         </form>
       </div>
@@ -76,11 +81,11 @@
   </main>
 
   <footer class="footer">
-    <div class="container footer-inner">
-      <p class="footer-text">© 2026 «Хвиля» — навчальний проєкт з дисципліни «Вебтехнології та вебдизайн».<br>Автор: Хорошилова Анна, група 5-ІПБ</p>
-      <nav class="footer-nav">
-        <a class="footer-link" href="https://github.com/AnnaKhoro/webproject-khoroshylova">Репозиторій</a>
-        <a class="footer-link" href="docs/tz.md">Технічне завдання</a>
+    <div class="container footer__inner">
+      <p class="footer__text">© 2026 «Хвиля» — навчальний проєкт з дисципліни «Вебтехнології та вебдизайн».<br>Автор: Хорошилова Анна, група 5-ІПБ</p>
+      <nav class="footer__nav" aria-label="Посилання проєкту">
+        <a class="footer__link" href="https://github.com/AnnaKhoro/webproject-khoroshylova">Репозиторій</a>
+        <a class="footer__link" href="docs/tz.md">Технічне завдання</a>
       </nav>
     </div>
   </footer>

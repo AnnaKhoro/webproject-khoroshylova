@@ -1,0 +1,35 @@
+// Навігація: .nav з елементом link і модифікатором link--active (поточний розділ)
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: $space * 2;
+
+  // вирівнювання ліворуч (поза шапкою)
+  &--start {
+    justify-content: flex-start;
+  }
+
+  &__link {
+    padding: $space * 0.5 0;
+    border-bottom: 2px solid transparent;
+    color: var(--color-muted);
+    transition: color $transition, border-color $transition;
+
+    @include focus-ring;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+
+    &--active {
+      border-bottom-color: var(--color-primary);
+      color: var(--color-primary);
+      font-weight: $fw-semibold;
+    }
+  }
+}

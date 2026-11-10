@@ -11,7 +11,7 @@
     padding: $space * 8 0;
   }
 
-  &-text {
+  &__text {
     max-width: $content-width;
     color: $color-muted;
     margin-bottom: $space * 3;
@@ -23,7 +23,7 @@
   gap: $space;
   max-width: $content-width;
 
-  &-input {
+  &__input {
     flex: 1;
     padding: $space $space * 2;
     font: inherit;
@@ -31,6 +31,8 @@
     background: $color-surface;
     border: 1px solid $color-border;
     border-radius: $radius;
+
+    @include focus-ring(1px);
   }
 }
 
@@ -42,18 +44,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: $space;
-}
-
-.tag {
-  padding: $space * 0.5 $space * 2;
-  border: 1px solid $color-border;
-  border-radius: $radius-pill;
-  color: $color-primary;
-  transition: border-color $transition;
-
-  &:hover {
-    border-color: $color-primary;
-  }
 }
 
 .cards {

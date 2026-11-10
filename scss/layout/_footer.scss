@@ -9,7 +9,7 @@
   color: $color-footer-text;
   font-size: $fs-sm;
 
-  &-inner {
+  &__inner {
     display: flex;
     flex-direction: column;
     gap: $space * 2;
@@ -21,17 +21,19 @@
     }
   }
 
-  &-nav {
+  &__nav {
     display: flex;
     gap: $space * 2;
   }
 
-  &-link {
+  &__link {
     color: $color-secondary;
     transition: color $transition;
 
+    @include focus-ring;
+
     &:hover {
-      color: $color-on-primary;
+      text-decoration: underline;
     }
   }
 }

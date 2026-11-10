@@ -8,14 +8,18 @@
 </head>
 <body>
   <header class="header">
-    <div class="container header-inner">
-      <a class="logo" href="index.html">Хвиля</a>
-      <nav class="nav">
-        <a class="nav-link" href="#">Каталог</a>
-        <a class="nav-link" href="#">Пошук</a>
-        <a class="nav-link" href="#">Вибране</a>
+    <div class="container header__inner">
+      <a class="header__logo" href="index.html">Хвиля</a>
+      <div class="header__actions">
+        <nav class="nav" aria-label="Основна навігація">
+        <a class="nav__link" href="index.html">Головна</a>
+        <a class="nav__link" href="#">Каталог</a>
+        <a class="nav__link" href="#">Пошук</a>
+        <a class="nav__link" href="#">Вибране</a>
+        <a class="nav__link nav__link--active" href="ui-kit.html" aria-current="page">UI-кіт</a>
+        </nav>
         <a class="button button--primary button--small" href="#">Увійти</a>
-      </nav>
+      </div>
     </div>
   </header>
 
@@ -83,16 +87,65 @@
           </article>
       </div>
     </section>
+
+    <section class="kit__section" id="nav">
+      <h2>Навігація — nav і мітка — tag</h2>
+      <p class="kit__caption">nav__link з модифікатором --active (поточний розділ, також aria-current); tag з модифікатором --active (вибрана категорія).</p>
+      <div class="kit__stack">
+      <nav class="nav nav--start" aria-label="Приклад навігації">
+        <a class="nav__link" href="#nav">Головна</a>
+        <a class="nav__link nav__link--active" href="#nav" aria-current="page">Каталог</a>
+        <a class="nav__link" href="#nav">Пошук</a>
+        <a class="nav__link" href="#nav">Вибране</a>
+      </nav>
+      <div class="tags">
+        <a class="tag tag--active" href="#nav">Освіта</a>
+        <a class="tag" href="#nav">Наука</a>
+        <a class="tag" href="#nav">Технології</a>
+      </div>
+      </div>
+    </section>
+
+    <section class="kit__section" id="alert">
+      <h2>Повідомлення — alert</h2>
+      <p class="kit__caption">Модифікатори --success, --error, --warning. Тип повідомлення передано значком і словом, а не лише кольором.</p>
+      <div class="kit__stack">
+        <div class="alert" role="status"><span class="alert__icon" aria-hidden="true">ℹ</span><span class="alert__text"><b>Довідка.</b> Пошук працює і за назвою, і за текстом розшифровки.</span></div>
+        <div class="alert alert--success" role="status"><span class="alert__icon" aria-hidden="true">✓</span><span class="alert__text"><b>Готово.</b> Випуск додано у вибране.</span></div>
+        <div class="alert alert--warning" role="status"><span class="alert__icon" aria-hidden="true">!</span><span class="alert__text"><b>Увага.</b> Розшифровка цього випуску ще перевіряється.</span></div>
+        <div class="alert alert--error" role="alert"><span class="alert__icon" aria-hidden="true">✕</span><span class="alert__text"><b>Помилка.</b> Не вдалося зберегти коментар. Спробуйте ще раз.</span></div>
+      </div>
+    </section>
+
+    <section class="kit__section" id="modal">
+      <h2>Модальне вікно — modal</h2>
+      <p class="kit__caption">Елементи __overlay, __window, __title, __close, __actions; модифікатор --open показує вікно. Закривається кнопкою ×, клавішею Esc або кліком по затемненню.</p>
+      <button class="button button--secondary" type="button" data-modal-open="kit-modal">Відкрити модальне вікно</button>
+    </section>
+
+    <div class="modal" id="kit-modal" role="dialog" aria-modal="true" aria-labelledby="kit-modal-title">
+      <div class="modal__overlay" data-modal-close></div>
+      <div class="modal__window">
+        <h3 class="modal__title" id="kit-modal-title">Видалити випуск із вибраного?</h3>
+        <button class="modal__close" type="button" aria-label="Закрити" data-modal-close>×</button>
+        <p>Випуск «Нейромережі простими словами» зникне зі списку вибраного. Ви зможете додати його знову зі сторінки випуску.</p>
+        <div class="modal__actions">
+          <button class="button button--ghost" type="button" data-modal-close>Скасувати</button>
+          <button class="button button--primary" type="button" data-modal-close>Видалити</button>
+        </div>
+      </div>
+    </div>
   </main>
 
   <footer class="footer">
-    <div class="container footer-inner">
-      <p class="footer-text">© 2026 «Хвиля» — навчальний проєкт з дисципліни «Вебтехнології та вебдизайн».<br>Автор: Хорошилова Анна, група 5-ІПБ</p>
-      <nav class="footer-nav">
-        <a class="footer-link" href="https://github.com/AnnaKhoro/webproject-khoroshylova">Репозиторій</a>
-        <a class="footer-link" href="docs/tz.md">Технічне завдання</a>
+    <div class="container footer__inner">
+      <p class="footer__text">© 2026 «Хвиля» — навчальний проєкт з дисципліни «Вебтехнології та вебдизайн».<br>Автор: Хорошилова Анна, група 5-ІПБ</p>
+      <nav class="footer__nav" aria-label="Посилання проєкту">
+        <a class="footer__link" href="https://github.com/AnnaKhoro/webproject-khoroshylova">Репозиторій</a>
+        <a class="footer__link" href="docs/tz.md">Технічне завдання</a>
       </nav>
     </div>
   </footer>
+  <script src="js/modal.js"></script>
 </body>
 </html>
