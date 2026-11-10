@@ -4,7 +4,9 @@ import { Store } from './services/store.js';
 import { renderList, renderCategoryTags } from './ui/renderList.js';
 import { renderDetails } from './ui/renderDetails.js';
 import { openModal, bindModal } from './ui/modal.js';
-import { formatDuration } from './utils/format.js';
+import { showErrors, clearFieldError } from './ui/formErrors.js';
+import { validateSuggestion } from './utils/validate.js';
+import { formatDuration, escapeHtml } from './utils/format.js';
 
 const store = new Store({ episodes, podcasts, categories });
 const counts = store.countByCategory();
@@ -18,6 +20,8 @@ const els = {
   summary: document.querySelector('#catalog-summary'),
   modal: document.querySelector('#episode-modal'),
   modalContent: document.querySelector('#episode-modal-content'),
+  form: document.querySelector('#suggest-form'),
+  result: document.querySelector('#suggest-result'),
 };
 
 // Увесь стан інтерфейсу — в одному об'єкті; змінюється лише заміною на новий об'єкт
@@ -87,6 +91,33 @@ function openDetails(id, button) {
   els.modalContent.innerHTML = renderDetails(episode);
   openModal(els.modal, button);
 }
+
+// Форма «Запропонувати подкаст»
+const existingTitles = podcasts.map((p) => p.title);
+
+els.form.addEventListener('submit', (event) => {
+  event.preventDefault();                                  // без перезавантаження сторінки
+  const data = Object.fromEntries(new FormData(els.form)); // значення за атрибутами name
+  const errors = validateSuggestion(data, { existingTitles });
+  showErrors(els.form, errors);                            // введені дані не чіпаємо
+
+  if (Object.keys(errors).length > 0) {
+    els.result.innerHTML = '';
+    return;
+  }
+  els.result.innerHTML = `
+    <div class="alert alert--success" role="status" tabindex="-1">
+      <span class="alert__icon" aria-hidden="true">✓</span>
+      <span class="alert__text"><b>Дякуємо!</b> Пропозицію подкасту «${escapeHtml(data.podcastTitle.trim())}» надіслано, ми відповімо на ${escapeHtml(data.email.trim())}.</span>
+    </div>`;
+  console.log('Пропозиція подкасту:', data);
+  els.form.reset();
+  els.result.querySelector('.alert').focus();
+});
+
+// Позначка помилки зникає, щойно користувач почав виправляти поле
+els.form.addEventListener('input', (event) => clearFieldError(event.target));
+els.form.addEventListener('change', (event) => clearFieldError(event.target));
 
 update();
 console.log('countByCategory():', counts);

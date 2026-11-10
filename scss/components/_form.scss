@@ -32,6 +32,12 @@
     }
   }
 
+  // багаторядкове поле: змінюється лише висота
+  &__input--textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
   &__hint {
     font-size: $fs-sm;
     color: var(--color-muted);

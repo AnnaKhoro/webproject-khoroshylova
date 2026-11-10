@@ -46,6 +46,55 @@
     </div>
     <p class="catalog__summary" id="catalog-summary" role="status" aria-live="polite">Завантаження каталогу…</p>
     <div class="cards catalog__list" id="catalog"></div>
+
+    <section class="catalog__suggest" aria-labelledby="suggest-heading">
+      <h2 id="suggest-heading">Запропонувати подкаст</h2>
+      <p class="catalog__intro">Знаєте україномовний подкаст, якого ще немає в каталозі? Розкажіть про нього — після перевірки редакція додасть його разом із розшифровками випусків.</p>
+      <div class="catalog__result" id="suggest-result"></div>
+      <form class="catalog__form" id="suggest-form" novalidate>
+        <div class="field">
+          <label class="field__label" for="suggest-name">Ваше ім'я</label>
+          <input class="field__input" id="suggest-name" name="name" type="text" autocomplete="name" aria-describedby="suggest-name-error">
+          <span class="field__error" id="suggest-name-error"></span>
+        </div>
+        <div class="field">
+          <label class="field__label" for="suggest-email">Email</label>
+          <input class="field__input" id="suggest-email" name="email" type="email" autocomplete="email" aria-describedby="suggest-email-error">
+          <span class="field__error" id="suggest-email-error"></span>
+        </div>
+        <div class="field">
+          <label class="field__label" for="suggest-podcastTitle">Назва подкасту</label>
+          <input class="field__input" id="suggest-podcastTitle" name="podcastTitle" type="text" aria-describedby="suggest-podcastTitle-error">
+          <span class="field__error" id="suggest-podcastTitle-error"></span>
+        </div>
+        <div class="field">
+          <label class="field__label" for="suggest-category">Категорія</label>
+          <select class="field__input" id="suggest-category" name="category" aria-describedby="suggest-category-error">
+            <option value="">— виберіть —</option>
+              <option value="education">Освіта</option>
+              <option value="science">Наука</option>
+              <option value="tech">Технології</option>
+              <option value="history">Історія</option>
+              <option value="psychology">Психологія</option>
+              <option value="career">Кар'єра</option>
+          </select>
+          <span class="field__error" id="suggest-category-error"></span>
+        </div>
+        <div class="field catalog__wide">
+          <label class="field__label" for="suggest-link">Посилання на подкаст</label>
+          <input class="field__input" id="suggest-link" name="link" type="url" placeholder="https://" aria-describedby="suggest-link-error">
+          <span class="field__error" id="suggest-link-error"></span>
+        </div>
+        <div class="field catalog__wide">
+          <label class="field__label" for="suggest-message">Чим цікавий подкаст</label>
+          <textarea class="field__input field__input--textarea" id="suggest-message" name="message" rows="4" aria-describedby="suggest-message-error"></textarea>
+          <span class="field__error" id="suggest-message-error"></span>
+        </div>
+        <div class="catalog__wide">
+          <button class="button button--primary" type="submit">Надіслати пропозицію</button>
+        </div>
+      </form>
+    </section>
   </main>
 
   <div class="modal" id="episode-modal" role="dialog" aria-modal="true" aria-labelledby="episode-modal-title">

@@ -33,4 +33,37 @@
   &__list > .alert {
     grid-column: 1 / -1;
   }
+
+  &__suggest {
+    margin-top: $space * 6;
+    padding-top: $space * 4;
+    border-top: 1px solid var(--color-border);
+  }
+
+  &__intro {
+    max-width: $content-width;
+    margin-bottom: $space * 3;
+    color: var(--color-muted);
+  }
+
+  &__result:not(:empty) {
+    max-width: 760px;
+    margin-bottom: $space * 3;
+  }
+
+  &__form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space * 2.5;
+    max-width: 760px;
+
+    @include respond-to(tablet) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  // поле опису й кнопка займають обидві колонки форми
+  &__wide {
+    grid-column: 1 / -1;
+  }
 }
