@@ -9,7 +9,7 @@ export function renderCard(episode, isFavorite = false) {
   return `
     <article class="card${featured ? ' card--featured' : ''}">
       ${badge}
-      <div class="card__image" aria-hidden="true">#${String(episode.id).padStart(2, '0')}</div>
+      <div class="card__image" aria-hidden="true">${escapeHtml(initials(episode.podcastTitle))}</div>
       <h3 class="card__title">${escapeHtml(episode.title)}</h3>
       <p class="card__subtitle">${escapeHtml(episode.podcastTitle)} · ${escapeHtml(episode.category)}</p>
       <p class="card__text">${escapeHtml(episode.description)}</p>
@@ -19,4 +19,11 @@ export function renderCard(episode, isFavorite = false) {
           <button class="button button--primary button--small" type="button" data-action="open" data-id="${episode.id}">Детальніше</button>
       </div>
     </article>`;
+}
+
+// Ініціали подкасту для обкладинки: «Код без кави» → «КБ». Раніше тут був номер випуску,
+// але id з API — 13-значні числа, які не вміщаються на обкладинці
+function initials(title) {
+  const letters = title.match(/[\p{L}\d]+/gu) ?? ['?'];
+  return letters.slice(0, 2).map((word) => word[0].toUpperCase()).join('');
 }
