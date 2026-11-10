@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Каталог випусків — Хвиля</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <a class="header__logo" href="index.html">Хвиля</a>
+      <div class="header__actions">
+        <nav class="nav" aria-label="Основна навігація">
+        <a class="nav__link" href="index.html">Головна</a>
+        <a class="nav__link nav__link--active" href="catalog.html" aria-current="page">Каталог</a>
+        <a class="nav__link" href="#">Пошук</a>
+        <a class="nav__link" href="#">Вибране</a>
+        <a class="nav__link" href="ui-kit.html">UI-кіт</a>
+        </nav>
+        <button class="button button--ghost button--small" type="button" data-theme-toggle>Темна тема</button>
+        <a class="button button--primary button--small" href="#">Увійти</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container catalog">
+    <h1>Каталог випусків</h1>
+    <p class="catalog__summary" id="catalog-summary">Завантаження каталогу…</p>
+    <div class="cards" id="catalog"></div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="footer__text">© 2026 «Хвиля» — навчальний проєкт з дисципліни «Вебтехнології та вебдизайн».<br>Автор: Хорошилова Анна, група 5-ІПБ</p>
+      <nav class="footer__nav" aria-label="Посилання проєкту">
+        <a class="footer__link" href="https://github.com/AnnaKhoro/webproject-khoroshylova">Репозиторій</a>
+        <a class="footer__link" href="docs/tz.md">Технічне завдання</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="js/theme.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
