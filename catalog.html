@@ -27,8 +27,16 @@
 
   <main class="container catalog">
     <h1>Каталог випусків</h1>
-    <p class="catalog__summary" id="catalog-summary">Завантаження каталогу…</p>
-    <div class="cards" id="catalog"></div>
+    <div class="catalog__filters">
+      <form class="search" action="catalog.html" role="search">
+        <label class="visually-hidden" for="catalog-query">Пошук випусків</label>
+        <input class="search__input" id="catalog-query" name="q" type="search" placeholder="Назва, тема або подкаст">
+        <button class="button button--primary" type="submit">Знайти</button>
+      </form>
+      <div class="tags" id="catalog-tags"></div>
+    </div>
+    <p class="catalog__summary" id="catalog-summary" role="status">Завантаження каталогу…</p>
+    <div class="cards catalog__list" id="catalog"></div>
   </main>
 
   <footer class="footer">

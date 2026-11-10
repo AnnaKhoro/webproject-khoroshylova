@@ -1,0 +1,23 @@
+// Сторінка каталогу випусків: розкладка фільтрів, підсумку й сітки
+@use '../abstracts/variables' as *;
+
+.catalog {
+  padding: $space * 4 0;
+
+  &__filters {
+    display: flex;
+    flex-direction: column;
+    gap: $space * 2;
+    margin-bottom: $space * 3;
+  }
+
+  &__summary {
+    margin-bottom: $space * 2;
+    color: var(--color-muted);
+  }
+
+  // повідомлення «Нічого не знайдено» займає всю ширину сітки
+  &__list > .alert {
+    grid-column: 1 / -1;
+  }
+}

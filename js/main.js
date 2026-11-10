@@ -1,13 +1,27 @@
-// Точка входу сторінки каталогу: зв'язує дані, моделі, сховище й розмітку
+// Точка входу сторінки каталогу: зв'язує дані, сховище й розмітку і нічого не обчислює сама
 import { categories, podcasts, episodes } from './data/catalog.js';
 import { Store } from './services/store.js';
+import { renderList, renderCategoryTags } from './ui/renderList.js';
+import { formatDuration } from './utils/format.js';
 
 const store = new Store({ episodes, podcasts, categories });
 
-console.log('Усього випусків:', store.all().length);
-console.log('search("нейромереж"):', store.search('нейромереж').map((e) => e.title));
-console.log('byCategory("history"):', store.byCategory('history').map((e) => e.title));
-console.log('byId(5):', store.byId(5)?.title);
-console.log('sortedByTitle():', store.sortedByTitle().map((e) => e.title));
-console.log('Вихідний порядок не змінився:', store.all().map((e) => e.id).join(','));
-console.log('countByCategory():', store.countByCategory());
+// Параметри з адреси сторінки: catalog.html?q=git або catalog.html?category=history
+const params = new URLSearchParams(location.search);
+const query = params.get('q') ?? '';
+const category = params.get('category') ?? '';
+
+const list = query || category
+  ? store.filter({ query, category }).sort((a, b) => a.title.localeCompare(b.title, 'uk'))
+  : store.sortedByTitle();
+
+const counts = store.countByCategory();
+
+document.querySelector('#catalog-tags').innerHTML = renderCategoryTags(store.categories, counts, category);
+document.querySelector('#catalog').innerHTML = renderList(list);
+document.querySelector('#catalog-summary').textContent =
+  `Знайдено випусків: ${list.length} із ${store.all().length}, загальна тривалість ${formatDuration(Store.totalDuration(list))}`;
+document.querySelector('#catalog-query').value = query;
+
+console.log('countByCategory():', counts);
+console.table(counts);
