@@ -9,9 +9,11 @@ import { CategoryFilter } from '../components/CategoryFilter.jsx';
 import { Field } from '../components/Field.jsx';
 import { EpisodeList } from '../components/EpisodeList.jsx';
 import { Modal } from '../components/Modal.jsx';
+import { SuggestForm } from '../components/SuggestForm.jsx';
 
 const store = new Store({ episodes, podcasts, categories });
 const counts = store.countByCategory();
+const existingTitles = podcasts.map((p) => p.title);   // для правила «такого подкасту ще немає»
 
 // Тимчасовий ручний перемикач стану для перевірки: ?status=loading | error
 // (так само його можна змінити в React Developer Tools). Справжнє завантаження — на ПР12.
@@ -68,6 +70,7 @@ export function CatalogPage() {
         </p>
       )}
       <EpisodeList status={status} error={error} episodes={filtered} onOpen={handleOpen} onRetry={() => setStatus('success')} />
+      <SuggestForm existingTitles={existingTitles} />
       {openEpisode && <Modal episode={openEpisode} onClose={handleClose} />}
     </main>
   );
