@@ -1,44 +1,43 @@
-// Кореневий компонент застосунку «Хвиля».
-// Тимчасова вітрина: перевірка базових компонентів UI-кіту в React.
+// Кореневий компонент застосунку «Хвиля»: сторінка каталогу, зібрана з компонентів.
+// Дані поки що з перенесеної заглушки через сховище Store; на ПР12 їх замінить API.
 import { categories, podcasts, episodes } from './data/catalog.js';
 import { Store } from './services/store.js';
-import { Button } from './components/Button.jsx';
-import { Card } from './components/Card.jsx';
-import { Field } from './components/Field.jsx';
-import { Alert } from './components/Alert.jsx';
+import { formatDuration } from './utils/format.js';
+import { Header } from './components/Header.jsx';
+import { Footer } from './components/Footer.jsx';
+import { EpisodeList } from './components/EpisodeList.jsx';
 import { Tag } from './components/Tag.jsx';
 
 const store = new Store({ episodes, podcasts, categories });
 
 export default function App() {
-  const [first, second] = [store.byId(1), store.byId(2)];
+  const list = store.sortedByTitle();
+  const counts = store.countByCategory();
+
+  // Поки що лише виводимо запис у консоль; модальне вікно з'явиться разом зі станом на ПР10
+  function handleOpen(id) {
+    console.log('Відкрити випуск:', store.byId(id));
+  }
+
   return (
-    <main className="container kit">
-      <h1>Компоненти UI-кіту в React</h1>
-      <div className="kit__row">
-        <Button>Слухати</Button>
-        <Button variant="secondary">У вибране</Button>
-        <Button variant="ghost">Скасувати</Button>
-        <Button disabled>Недоступно</Button>
-        <Button size="small">Увійти</Button>
-      </div>
-      <div className="kit__row">
-        <Tag active>Освіта</Tag>
-        <Tag>Наука</Tag>
-      </div>
-      <div className="kit__grid">
-        <Field label="Ім'я" name="name" hint="Так вас бачитимуть інші слухачі" />
-        <Field label="Email" name="email" type="email" defaultValue="anna@" error="Email має бути у форматі name@example.com" />
-        <Field label="Роль" name="role" defaultValue="Слухач" disabled />
-      </div>
-      <div className="kit__stack">
-        <Alert variant="success" title="Готово.">Випуск додано у вибране.</Alert>
-        <Alert variant="error" title="Помилка.">Не вдалося зберегти коментар.</Alert>
-      </div>
-      <div className="kit__grid">
-        <Card episode={first} onOpen={(id) => console.log('Відкрити випуск', id)} />
-        <Card episode={second} onOpen={(id) => console.log('Відкрити випуск', id)} />
-      </div>
-    </main>
+    <>
+      <Header active="Каталог" />
+      <main className="container catalog">
+        <h1>Каталог випусків</h1>
+        <div className="catalog__filters">
+          <div className="tags">
+            <Tag active>Усі ({list.length})</Tag>
+            {store.categories.map((c) => (
+              <Tag key={c.slug}>{c.name} ({counts[c.name] ?? 0})</Tag>
+            ))}
+          </div>
+        </div>
+        <p className="catalog__summary">
+          Випусків у каталозі: {list.length}, загальна тривалість {formatDuration(Store.totalDuration(list))}
+        </p>
+        <EpisodeList episodes={list} onOpen={handleOpen} />
+      </main>
+      <Footer />
+    </>
   );
 }
