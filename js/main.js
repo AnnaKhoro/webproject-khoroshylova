@@ -1,6 +1,7 @@
 // Точка входу сторінки каталогу: зберігає стан інтерфейсу, обробляє події й перемальовує перелік
 import { Store } from './services/store.js';
-import { getCatalog } from './services/api.js';
+import { getCatalog, searchCatalog } from './services/api.js';
+import { debounce } from './utils/debounce.js';
 import { renderList, renderCategoryTags } from './ui/renderList.js';
 import { renderSkeleton, renderError } from './ui/renderStatus.js';
 import { renderDetails } from './ui/renderDetails.js';
@@ -9,7 +10,9 @@ import { showErrors, clearFieldError } from './ui/formErrors.js';
 import { validateSuggestion } from './utils/validate.js';
 import { formatDuration, escapeHtml } from './utils/format.js';
 
-// Сховище з'являється лише після завантаження даних
+// Сховище з'являється лише після завантаження даних.
+// catalogStore — основний каталог; store — те, що показується зараз (каталог або результати пошуку)
+let catalogStore = null;
 let store = null;
 let counts = {};
 let existingTitles = [];
@@ -32,7 +35,8 @@ const els = {
 
 // Увесь стан інтерфейсу — в одному об'єкті; змінюється лише заміною на новий об'єкт
 // status: 'idle' → 'loading' → 'success' | 'error'
-let state = { status: 'idle', error: null, query: '', category: null, sort: 'title', favorites: [] };
+// mode: 'catalog' — основний каталог, 'search' — результати пошуку в API
+let state = { status: 'idle', error: null, mode: 'catalog', query: '', category: null, sort: 'title', favorites: [] };
 
 function setState(patch) {
   state = { ...state, ...patch };
@@ -40,8 +44,9 @@ function setState(patch) {
 }
 
 function visibleEpisodes() {
-  const list = store
-    .search(state.query)
+  // результати пошуку вже відібрало API; короткий запит (1 символ) фільтрує каталог локально
+  const base = state.mode === 'search' ? store.all() : store.search(state.query);
+  const list = base
     .filter((episode) => !state.category || episode.categorySlug === state.category);
   return state.sort === 'date'
     ? list.sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
@@ -53,7 +58,7 @@ function update() {
   if (state.status === 'loading') {
     els.list.innerHTML = renderSkeleton();
     els.tags.innerHTML = '';
-    els.summary.textContent = 'Завантаження каталогу…';
+    els.summary.textContent = state.query.trim().length >= 2 ? `Пошук «${state.query.trim()}»…` : 'Завантаження каталогу…';
     return;
   }
   if (state.status === 'error') {
@@ -64,14 +69,43 @@ function update() {
   }
   const list = visibleEpisodes();
   els.list.innerHTML = renderList(list, state.favorites);
-  els.tags.innerHTML = renderCategoryTags(store.categories, counts, state.category);
+  els.tags.innerHTML = renderCategoryTags(store.categories, store.countByCategory(), state.category);
+  const where = state.mode === 'search' ? `за запитом «${state.query.trim()}» в Apple Podcasts` : 'у каталозі «Хвилі»';
   els.summary.textContent =
-    `Знайдено випусків: ${list.length} із ${store.all().length}, загальна тривалість ${formatDuration(Store.totalDuration(list))}`;
+    `Знайдено випусків ${where}: ${list.length} із ${store.all().length}, загальна тривалість ${formatDuration(Store.totalDuration(list))}`;
 }
 
-// Живий пошук: кожна зміна поля одразу оновлює перелік; Enter не перезавантажує сторінку
-els.query.addEventListener('input', (event) => setState({ query: event.target.value }));
-els.search.addEventListener('submit', (event) => event.preventDefault());
+// Живий пошук у мережі: запит надсилається через 300 мс після останнього натискання (debounce),
+// а попередній незавершений запит скасовується в searchCatalog (AbortController)
+async function runSearch(query) {
+  const term = query.trim();
+  if (term.length < 2) {                     // порожній або короткий запит — основний каталог
+    store = catalogStore;
+    if (store) setState({ mode: 'catalog', status: 'success', error: null });
+    return;
+  }
+  setState({ status: 'loading', error: null });
+  try {
+    const result = await searchCatalog(term);
+    if (result === null) return;             // запит скасовано новішим — нічого не робимо
+    store = new Store(result);
+    setState({ mode: 'search', status: 'success', category: null });
+  } catch (error) {
+    console.error('Помилка пошуку:', error);
+    setState({ status: 'error', error });
+  }
+}
+
+const runSearchDebounced = debounce(runSearch, 300);
+
+els.query.addEventListener('input', (event) => {
+  state = { ...state, query: event.target.value };
+  runSearchDebounced(event.target.value);
+});
+els.search.addEventListener('submit', (event) => {
+  event.preventDefault();
+  runSearch(els.query.value);                // Enter — шукати одразу, без очікування
+});
 
 // Категорії: один обробник на контейнері міток
 els.tags.addEventListener('click', (event) => {
@@ -143,7 +177,8 @@ async function load() {
   setState({ status: 'loading', error: null });
   try {
     const catalog = await loadCatalog();
-    store = new Store(catalog);
+    catalogStore = new Store(catalog);
+    store = catalogStore;
     counts = store.countByCategory();
     existingTitles = catalog.podcasts.map((p) => p.title);
     setState({ status: 'success' });

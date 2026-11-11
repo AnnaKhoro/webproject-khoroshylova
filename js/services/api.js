@@ -12,6 +12,9 @@ export const SECTIONS = [
   { id: 6, name: "Кар'єра", slug: 'career', term: "кар'єра" },
 ];
 
+// Категорія для записів, жанр яких не відповідає жодному розділу (трапляється в результатах пошуку)
+const OTHER = { id: 7, name: 'Інше', slug: 'other' };
+
 // Жанр Apple Podcasts → slug нашої категорії
 const GENRE_TO_SLUG = {
   Education: 'education', Courses: 'education', 'How To': 'education',
@@ -23,9 +26,13 @@ const GENRE_TO_SLUG = {
 };
 
 // Спільна функція запиту: перевіряє response.ok і кидає помилку з кодом стану
-async function request(path, params = {}) {
-  const query = new URLSearchParams(params).toString();
-  const response = await fetch(`${BASE_URL}${path}?${query}`);
+// signal — від AbortController: дозволяє перервати запит, якщо він уже не потрібен
+async function request(path, params = {}, { signal } = {}) {
+  // кожне значення кодується: пробіли, & і кирилиця в пошуковому запиті не зламають адресу
+  const query = Object.entries(params)
+    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+    .join('&');
+  const response = await fetch(`${BASE_URL}${path}?${query}`, { signal });
   if (!response.ok) {
     // statusText буває порожнім (HTTP/2 не передає текстовий опис), тому додаємо його лише за наявності
     throw new Error(`HTTP ${response.status}${response.statusText ? `: ${response.statusText}` : ''}`);
@@ -34,14 +41,14 @@ async function request(path, params = {}) {
 }
 
 // Випуски україномовних подкастів за пошуковим словом (сирі записи API)
-export async function searchEpisodes(term, limit = 8) {
+export async function searchEpisodes(term, limit = 8, options = {}) {
   const data = await request('/search', {
     term,
     country: 'UA',
     media: 'podcast',
     entity: 'podcastEpisode',
     limit,
-  });
+  }, options);
   return data.results ?? [];
 }
 
@@ -71,7 +78,8 @@ export function toCatalog(records) {
     const e = toEpisode(raw, fallbackSlug);
     if (!e.id || episodes.some((x) => x.id === e.id)) continue;   // без id або дублікат — пропускаємо
     if (!podcasts.has(e.podcastId)) {
-      const section = SECTIONS.find((s) => s.slug === e.categorySlug) ?? SECTIONS.find((s) => s.slug === fallbackSlug);
+      const section = [...SECTIONS, OTHER].find((s) => s.slug === e.categorySlug)
+        ?? [...SECTIONS, OTHER].find((s) => s.slug === fallbackSlug);
       podcasts.set(e.podcastId, { id: e.podcastId, categoryId: section?.id ?? 0, title: e.podcastTitle });
     }
     episodes.push({
@@ -79,10 +87,11 @@ export function toCatalog(records) {
       audioUrl: e.audioUrl, durationSec: e.durationSec, publishedAt: e.publishedAt,
     });
   }
+  const used = [...podcasts.values()].some((p) => p.categoryId === OTHER.id);
   return {
     episodes,
     podcasts: [...podcasts.values()],
-    categories: SECTIONS.map(({ id, name, slug }) => ({ id, name, slug })),
+    categories: [...SECTIONS, ...(used ? [OTHER] : [])].map(({ id, name, slug }) => ({ id, name, slug })),
   };
 }
 
@@ -91,4 +100,20 @@ export async function getCatalog() {
   const results = await Promise.all(SECTIONS.map((s) => searchEpisodes(s.term)));
   const records = results.flatMap((list, i) => list.map((raw) => ({ raw, fallbackSlug: SECTIONS[i].slug })));
   return toCatalog(records);
+}
+
+// Живий пошук по всьому каталогу: кожен новий запит СКАСОВУЄ попередній, щоб застаріла відповідь
+// не перезаписала свіжу. Повертає null, якщо запит скасовано, — це штатна ситуація, а не помилка.
+let searchController = null;
+
+export async function searchCatalog(term) {
+  searchController?.abort();
+  searchController = new AbortController();
+  try {
+    const raw = await searchEpisodes(term, 25, { signal: searchController.signal });
+    return toCatalog(raw.map((r) => ({ raw: r, fallbackSlug: OTHER.slug })));
+  } catch (error) {
+    if (error.name === 'AbortError') return null;
+    throw error;
+  }
 }
