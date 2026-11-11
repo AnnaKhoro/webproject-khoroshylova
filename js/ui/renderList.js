@@ -1,16 +1,11 @@
 // Розмітка переліку карток і фільтра категорій
 import { renderCard } from './renderCard.js';
 import { escapeHtml } from '../utils/format.js';
+import { renderEmpty } from './renderStatus.js';
 
 // map перетворює кожен випуск на рядок розмітки, join('') склеює їх в один рядок
-export function renderList(episodes, favorites = []) {
-  if (episodes.length === 0) {
-    return `
-      <div class="alert alert--warning" role="status">
-        <span class="alert__icon" aria-hidden="true">!</span>
-        <span class="alert__text"><b>Нічого не знайдено.</b> Спробуйте інше слово або виберіть іншу категорію.</span>
-      </div>`;
-  }
+export function renderList(episodes, favorites = [], query = '') {
+  if (episodes.length === 0) return renderEmpty(query);   // окремий стан, а не помилка
   return episodes.map((episode) => renderCard(episode, favorites.includes(episode.id))).join('');
 }
 

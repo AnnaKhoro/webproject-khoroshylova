@@ -25,6 +25,16 @@ const GENRE_TO_SLUG = {
   Careers: 'career', Business: 'career', Entrepreneurship: 'career',
 };
 
+// Помилка HTTP з кодом стану: за полем status інтерфейс вибирає зрозуміле повідомлення
+export class HttpError extends Error {
+  constructor(status, statusText = '') {
+    // statusText буває порожнім (HTTP/2 не передає текстовий опис), тому додаємо його лише за наявності
+    super(`HTTP ${status}${statusText ? `: ${statusText}` : ''}`);
+    this.name = 'HttpError';
+    this.status = status;
+  }
+}
+
 // Спільна функція запиту: перевіряє response.ok і кидає помилку з кодом стану
 // signal — від AbortController: дозволяє перервати запит, якщо він уже не потрібен
 async function request(path, params = {}, { signal } = {}) {
@@ -34,8 +44,7 @@ async function request(path, params = {}, { signal } = {}) {
     .join('&');
   const response = await fetch(`${BASE_URL}${path}?${query}`, { signal });
   if (!response.ok) {
-    // statusText буває порожнім (HTTP/2 не передає текстовий опис), тому додаємо його лише за наявності
-    throw new Error(`HTTP ${response.status}${response.statusText ? `: ${response.statusText}` : ''}`);
+    throw new HttpError(response.status, response.statusText);
   }
   return response.json();
 }

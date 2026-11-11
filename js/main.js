@@ -62,13 +62,13 @@ function update() {
     return;
   }
   if (state.status === 'error') {
-    els.list.innerHTML = renderError(state.error);
+    els.list.innerHTML = renderError(state.error, navigator.onLine);
     els.tags.innerHTML = '';
     els.summary.textContent = '';
     return;
   }
   const list = visibleEpisodes();
-  els.list.innerHTML = renderList(list, state.favorites);
+  els.list.innerHTML = renderList(list, state.favorites, state.query);
   els.tags.innerHTML = renderCategoryTags(store.categories, store.countByCategory(), state.category);
   const where = state.mode === 'search' ? `за запитом «${state.query.trim()}» в Apple Podcasts` : 'у каталозі «Хвилі»';
   els.summary.textContent =
@@ -77,6 +77,9 @@ function update() {
 
 // Живий пошук у мережі: запит надсилається через 300 мс після останнього натискання (debounce),
 // а попередній незавершений запит скасовується в searchCatalog (AbortController)
+// Останній запит, який повторює кнопка «Спробувати ще раз» (каталог або пошук)
+let lastRequest = () => load();
+
 async function runSearch(query) {
   const term = query.trim();
   if (term.length < 2) {                     // порожній або короткий запит — основний каталог
@@ -84,6 +87,7 @@ async function runSearch(query) {
     if (store) setState({ mode: 'catalog', status: 'success', error: null });
     return;
   }
+  lastRequest = () => runSearch(query);
   setState({ status: 'loading', error: null });
   try {
     const result = await searchCatalog(term);
@@ -126,7 +130,7 @@ els.list.addEventListener('click', (event) => {
   const { action, id } = button.dataset;
   if (action === 'open') openDetails(Number(id), button);
   if (action === 'favorite') toggleFavorite(Number(id));
-  if (action === 'retry') load();
+  if (action === 'retry') lastRequest();
 });
 
 function toggleFavorite(id) {
@@ -174,6 +178,7 @@ els.form.addEventListener('change', (event) => clearFieldError(event.target));
 
 // Завантаження даних з трьома станами інтерфейсу
 async function load() {
+  lastRequest = () => load();
   setState({ status: 'loading', error: null });
   try {
     const catalog = await loadCatalog();
