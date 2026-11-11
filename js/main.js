@@ -2,6 +2,7 @@
 import { Store } from './services/store.js';
 import { getCatalog, searchCatalog } from './services/api.js';
 import { debounce } from './utils/debounce.js';
+import { loadFilters, saveFilters, clearFilters } from './services/preferences.js';
 import { renderList, renderCategoryTags } from './ui/renderList.js';
 import { renderSkeleton, renderError } from './ui/renderStatus.js';
 import { renderDetails } from './ui/renderDetails.js';
@@ -28,6 +29,7 @@ const els = {
   list: document.querySelector('#catalog'),
   summary: document.querySelector('#catalog-summary'),
   refresh: document.querySelector('#catalog-refresh'),
+  reset: document.querySelector('#catalog-reset'),
   modal: document.querySelector('#episode-modal'),
   modalContent: document.querySelector('#episode-modal-content'),
   form: document.querySelector('#suggest-form'),
@@ -40,8 +42,14 @@ const els = {
 // source/savedAt — звідки взято каталог (cache | network) і коли його збережено
 let state = { status: 'idle', error: null, mode: 'catalog', query: '', category: null, sort: 'title', favorites: [], source: null, savedAt: null };
 
+// Стан фільтрів з попереднього сеансу: поле пошуку, категорія й сортування одразу такі, як були
+state = { ...state, ...loadFilters() };
+els.query.value = state.query;
+els.sort.value = state.sort;
+
 function setState(patch) {
   state = { ...state, ...patch };
+  saveFilters(state);                        // кожна зміна фільтрів одразу запам'ятовується
   update();
 }
 
@@ -86,7 +94,7 @@ function update() {
 // Останній запит, який повторює кнопка «Спробувати ще раз» (каталог або пошук)
 let lastRequest = () => load();
 
-async function runSearch(query) {
+async function runSearch(query, { keepCategory = false } = {}) {
   const term = query.trim();
   if (term.length < 2) {                     // порожній або короткий запит — основний каталог
     store = catalogStore;
@@ -99,7 +107,8 @@ async function runSearch(query) {
     const result = await searchCatalog(term);
     if (result === null) return;             // запит скасовано новішим — нічого не робимо
     store = new Store(result);
-    setState({ mode: 'search', status: 'success', category: null });
+    // нові результати — нові категорії; збережену категорію лишаємо лише під час відновлення стану
+    setState({ mode: 'search', status: 'success', category: keepCategory ? state.category : null });
   } catch (error) {
     console.error('Помилка пошуку:', error);
     setState({ status: 'error', error });
@@ -110,6 +119,7 @@ const runSearchDebounced = debounce(runSearch, 300);
 
 els.query.addEventListener('input', (event) => {
   state = { ...state, query: event.target.value };
+  saveFilters(state);
   runSearchDebounced(event.target.value);
 });
 els.search.addEventListener('submit', (event) => {
@@ -188,6 +198,17 @@ els.refresh.addEventListener('click', () => {
   else load({ force: true });
 });
 
+// Скидання фільтрів: очищає і стан, і сховище
+els.reset.addEventListener('click', () => {
+  const defaults = clearFilters();
+  els.query.value = defaults.query;
+  els.sort.value = defaults.sort;
+  store = catalogStore;
+  setState({ ...defaults, mode: 'catalog', status: catalogStore ? 'success' : state.status, error: null });
+  clearFilters();                            // setState знову записав стан — прибираємо запис зовсім
+  els.query.focus();
+});
+
 // Завантаження даних з трьома станами інтерфейсу
 async function load({ force = false } = {}) {
   lastRequest = () => load({ force });
@@ -200,6 +221,8 @@ async function load({ force = false } = {}) {
     existingTitles = catalog.podcasts.map((p) => p.title);
     setState({ status: 'success', mode: 'catalog', source: catalog.meta.source, savedAt: catalog.meta.savedAt });
     console.log(`Каталог: ${catalog.meta.source === 'cache' ? 'з кешу' : 'з мережі'}`, 'countByCategory():', counts);
+    // відновлений пошуковий запит із попереднього сеансу — виконуємо його одразу
+    if (state.query.trim().length >= 2 && state.mode === 'catalog') runSearch(state.query, { keepCategory: true });
   } catch (error) {
     console.error('Помилка завантаження каталогу:', error);
     setState({ status: 'error', error });
