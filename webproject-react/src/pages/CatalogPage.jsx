@@ -1,6 +1,6 @@
 // Сторінка каталогу: тут живе стан, потрібний і полю пошуку, і фільтру, і переліку —
 // їхній найближчий спільний предок. Дочірні компоненти отримують значення й функції зміни.
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { categories, podcasts, episodes } from '../data/catalog.js';
 import { Store } from '../services/store.js';
 import { formatDuration } from '../utils/format.js';
@@ -8,6 +8,7 @@ import { SearchField } from '../components/SearchField.jsx';
 import { CategoryFilter } from '../components/CategoryFilter.jsx';
 import { Field } from '../components/Field.jsx';
 import { EpisodeList } from '../components/EpisodeList.jsx';
+import { Modal } from '../components/Modal.jsx';
 
 const store = new Store({ episodes, podcasts, categories });
 const counts = store.countByCategory();
@@ -24,6 +25,8 @@ export function CatalogPage() {
   const [category, setCategory] = useState(null);   // slug або null — «Усі»
   const [sort, setSort] = useState('title');         // 'title' | 'date'
   const [status, setStatus] = useState(initialStatus);   // 'loading' | 'success' | 'error'
+  const [openEpisode, setOpenEpisode] = useState(null);  // відкритий запис: null або Episode
+  const openerRef = useRef(null);                          // кнопка, з якої відкрили вікно
   const error = status === 'error' ? Object.assign(new Error('HTTP 503'), { status: 503 }) : null;
 
   // Похідні дані: обчислюються під час кожного рендерингу, а не зберігаються в стані
@@ -35,7 +38,13 @@ export function CatalogPage() {
       : a.title.localeCompare(b.title, 'uk')));
 
   function handleOpen(id) {
-    console.log('Відкрити випуск:', store.byId(id));
+    openerRef.current = document.activeElement;   // запам'ятовуємо кнопку «Детальніше»
+    setOpenEpisode(store.byId(id));
+  }
+
+  function handleClose() {
+    setOpenEpisode(null);
+    openerRef.current?.focus();                   // фокус повертається туди, звідки відкрили вікно
   }
 
   return (
@@ -59,6 +68,7 @@ export function CatalogPage() {
         </p>
       )}
       <EpisodeList status={status} error={error} episodes={filtered} onOpen={handleOpen} onRetry={() => setStatus('success')} />
+      {openEpisode && <Modal episode={openEpisode} onClose={handleClose} />}
     </main>
   );
 }
