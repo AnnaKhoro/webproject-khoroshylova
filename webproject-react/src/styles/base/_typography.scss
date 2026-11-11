@@ -1,0 +1,30 @@
+// Базова типографіка
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+body {
+  font-family: $font-base;
+  font-size: $fs-base;
+  line-height: $lh-base;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+h1 {
+  font-size: $fs-xl;
+  line-height: $lh-heading;
+  margin-bottom: $space * 2;
+
+  @include respond-to(tablet) {
+    font-size: $fs-xxl;
+  }
+}
+
+h2 {
+  font-size: $fs-lg;
+  margin-bottom: $space * 2;
+}
+
+h3 {
+  font-size: $fs-md;
+}

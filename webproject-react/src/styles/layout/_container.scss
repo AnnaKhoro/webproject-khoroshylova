@@ -1,0 +1,8 @@
+// Контейнер сторінки
+@use '../abstracts/variables' as *;
+
+.container {
+  max-width: $container-width;
+  margin: 0 auto;
+  padding: 0 $space * 2;
+}

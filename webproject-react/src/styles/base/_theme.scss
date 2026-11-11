@@ -1,0 +1,73 @@
+// Кольори інтерфейсу як користувацькі властивості CSS.
+// Значення світлої теми беруться зі змінних SCSS; компоненти використовують лише var(--color-…).
+@use '../abstracts/variables' as *;
+
+:root {
+  --color-primary: #{$color-primary};
+  --color-primary-hover: #{$color-primary-hover};
+  --color-primary-soft: #{$color-primary-soft};
+  --color-secondary: #{$color-secondary};
+  --color-accent-text: #{$color-accent-text};
+  --color-text: #{$color-text};
+  --color-muted: #{$color-muted};
+  --color-bg: #{$color-bg};
+  --color-bg-alt: #{$color-bg-alt};
+  --color-surface: #{$color-surface};
+  --color-border: #{$color-border};
+  --color-on-primary: #{$color-on-primary};
+  --color-focus: #{$color-primary};
+  --color-footer-bg: #{$color-footer-bg};
+  --color-footer-text: #{$color-footer-text};
+  --color-success: #{$color-success};
+  --color-success-bg: #{$color-success-bg};
+  --color-error: #{$color-error};
+  --color-error-bg: #{$color-error-bg};
+  --color-warning: #{$color-warning};
+  --color-warning-bg: #{$color-warning-bg};
+  --color-overlay: #{$color-overlay};
+  --color-on-image: #ffffff;  // текст поверх градієнтної обкладинки в обох темах
+  --color-cover-start: #{$color-primary};
+  --color-cover-end: #{$color-accent-text};  // темний бурштиновий: білий номер має контраст ≥ 4.5:1
+}
+
+// Темна тема: вмикається атрибутом data-theme="dark" на <html>
+[data-theme="dark"] {
+  --color-primary: #7fb2ec;
+  --color-primary-hover: #a3c8f2;
+  --color-primary-soft: #1d2b3c;
+  --color-secondary: #f4b740;
+  --color-accent-text: #f4b740;
+  --color-text: #e6e9ee;
+  --color-muted: #a3adba;
+  --color-bg: #11161d;
+  --color-bg-alt: #18202a;
+  --color-surface: #1b2430;
+  --color-border: #2f3b4a;
+  --color-on-primary: #0b1a2c;
+  --color-focus: #a3c8f2;
+  --color-footer-bg: #0b0f14;
+  --color-footer-text: #c9d1db;
+  --color-success: #6fd29b;
+  --color-success-bg: #13291d;
+  --color-error: #ff8a80;
+  --color-error-bg: #3a1714;
+  --color-warning: #f4c06a;
+  --color-warning-bg: #33260f;
+  --color-overlay: rgba(0, 0, 0, 0.65);
+  --color-cover-start: #1d4e89;  // обкладинка лишається насиченою, щоб білий номер читався
+  --color-cover-end: #9a5800;
+  color-scheme: dark;
+}
+
+// Текст лише для екранних читачів (підпис поля пошуку)
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

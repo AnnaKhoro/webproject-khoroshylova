@@ -1,0 +1,54 @@
+// Змінні проєкту «Хвиля». Імена описують призначення, а не вигляд.
+// Кольори тут — значення світлої теми; у компонентах вони використовуються
+// лише через користувацькі властивості var(--color-…) з base/_theme.scss.
+
+// Кольори
+$color-primary:       #1d4e89;  // фірмовий колір: логотип, кнопки, посилання
+$color-primary-hover: #163d6b;  // стан наведення на основну кнопку
+$color-primary-soft:  #e8eef6;  // легке тло наведення для другорядних кнопок
+$color-secondary:     #f0a202;  // акцентний колір: градієнт обкладинки, посилання в підвалі
+$color-accent-text:   #9a5800;  // акцентний текст на світлому тлі (контраст ≥ 4.5:1)
+$color-text:          #1f2933;  // основний текст
+$color-muted:         #5f6b7a;  // другорядний текст
+$color-bg:            #ffffff;  // фон сторінки
+$color-bg-alt:        #f5f7fa;  // фон головного блоку
+$color-surface:       #ffffff;  // фон карток, полів, модального вікна
+$color-border:        #e5e7eb;  // рамки й роздільники
+$color-on-primary:    #ffffff;  // текст на фірмовому кольорі
+$color-footer-bg:     $color-text;
+$color-footer-text:   $color-border;
+$color-success:       #1e7a46;
+$color-success-bg:    #e8f5ec;
+$color-error:         #b42318;
+$color-error-bg:      #fdecea;
+$color-warning:       #8a5300;
+$color-warning-bg:    #fff4e0;
+$color-overlay:       rgba(15, 23, 42, 0.55);
+
+// Типографіка
+$font-base:    'Inter', system-ui, sans-serif;
+$fs-base:      16px;
+$fs-sm:        0.875rem;
+$fs-md:        1rem;
+$fs-lg:        1.25rem;
+$fs-xl:        1.75rem;
+$fs-xxl:       2.25rem;
+$lh-base:      1.6;
+$lh-heading:   1.25;
+$fw-semibold:  600;
+$fw-bold:      700;
+
+// Розміри та ефекти
+$space:            8px;   // базовий крок відступів, решта — кратні йому
+$radius:           8px;
+$radius-pill:      999px;
+$container-width:  1200px;
+$content-width:    640px;  // ширина текстового блоку й поля пошуку
+$shadow:           0 4px 12px rgba(0, 0, 0, 0.12);
+$shadow-lg:        0 16px 40px rgba(0, 0, 0, 0.25);
+$transition:       0.2s ease;
+$focus-ring:       2px;   // товщина індикатора фокусу
+
+// Точки адаптивності
+$bp-tablet:  768px;
+$bp-desktop: 1200px;

@@ -1,0 +1,61 @@
+// Головна сторінка: головний блок, пошук, категорії, сітка карток
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.hero {
+  padding: $space * 5 0;
+  background: var(--color-bg-alt);
+  border-bottom: 1px solid var(--color-border);
+
+  @include respond-to(tablet) {
+    padding: $space * 8 0;
+  }
+
+  &__text {
+    max-width: $content-width;
+    color: var(--color-muted);
+    margin-bottom: $space * 3;
+  }
+}
+
+.search {
+  display: flex;
+  gap: $space;
+  max-width: $content-width;
+
+  &__input {
+    flex: 1;
+    padding: $space $space * 2;
+    font: inherit;
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: $radius;
+
+    @include focus-ring(1px);
+  }
+}
+
+.section {
+  padding: $space * 4 0;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);  // minmax(0, …): довгий вміст не розширює колонку
+  gap: $space * 3;
+
+  @include respond-to(tablet) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @include respond-to(desktop) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

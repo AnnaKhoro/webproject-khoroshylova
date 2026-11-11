@@ -1,0 +1,98 @@
+// Картка випуску: .card з елементами image / title / subtitle / text / footer і модифікатором --featured.
+// Картка не задає зовнішніх відступів — її розміщує контейнер (.cards на головній).
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: $space * 2;
+  border: 1px solid var(--color-border);
+  border-radius: $radius;
+  background: var(--color-surface);
+  transition: box-shadow $transition, border-color $transition;
+
+  &:hover {
+    box-shadow: $shadow;
+  }
+
+  &__image {
+    @include flex-center;
+    height: 120px;
+    margin-bottom: $space * 2;
+    border-radius: $radius;
+    background: linear-gradient(135deg, var(--color-cover-start), var(--color-cover-end));
+    color: var(--color-on-image);
+    font-size: $fs-xl;
+    font-weight: $fw-bold;
+  }
+
+  &__title {
+    margin-bottom: $space * 0.5;
+    font-size: $fs-md;
+  }
+
+  &__subtitle {
+    margin-bottom: $space;
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    color: var(--color-accent-text);
+  }
+
+  &__text {
+    @include text-truncate(2);
+    margin-bottom: $space * 2;
+    color: var(--color-muted);
+  }
+
+  &__footer {
+    @include flex-center(row, space-between);
+    margin-top: auto;
+    font-size: $fs-sm;
+    color: var(--color-muted);
+  }
+
+  // Виділена картка: рамка у фірмовому кольорі й позначка «Вибір редакції»
+  &--featured {
+    border: 2px solid var(--color-primary);
+    box-shadow: $shadow;
+  }
+
+  &__badge {
+    align-self: flex-start;
+    margin-bottom: $space;
+    padding: 2px $space;
+    border-radius: $radius-pill;
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    font-size: 0.75rem;
+    font-weight: $fw-bold;
+  }
+
+  // Скелет картки під час завантаження: сірі смуги з анімацією «мерехтіння»
+  &--skeleton {
+    pointer-events: none;
+
+    .card__image,
+    .card__line {
+      background: linear-gradient(90deg, var(--color-bg-alt) 25%, var(--color-border) 50%, var(--color-bg-alt) 75%);
+      background-size: 200% 100%;
+      animation: skeleton-shimmer 1.2s ease-in-out infinite;
+    }
+  }
+
+  &__line {
+    height: 14px;
+    margin-bottom: $space;
+    border-radius: $radius;
+
+    &--short {
+      width: 60%;
+    }
+  }
+}
+
+@keyframes skeleton-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}

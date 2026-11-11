@@ -1,0 +1,29 @@
+// Головний файл стилів «Хвилі»: лише підключення партіалів у порядку каскаду
+
+// 1. abstracts — змінні та міксини (не дають CSS на виході)
+@use 'abstracts/variables' as *;
+@use 'abstracts/mixins' as *;
+
+// 2. base — тема (користувацькі властивості), скидання стилів і типографіка
+@use 'base/theme';
+@use 'base/reset';
+@use 'base/typography';
+
+// 3. layout — каркас сторінки
+@use 'layout/container';
+@use 'layout/header';
+@use 'layout/footer';
+
+// 4. components — UI-кіт за БЕМ
+@use 'components/button';
+@use 'components/form';
+@use 'components/card';
+@use 'components/nav';
+@use 'components/modal';
+@use 'components/alert';
+@use 'components/tag';
+
+// 5. pages — правила конкретних сторінок
+@use 'pages/home';
+@use 'pages/catalog';
+@use 'pages/ui-kit';

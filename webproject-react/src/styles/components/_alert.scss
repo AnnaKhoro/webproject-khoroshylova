@@ -1,0 +1,38 @@
+// Повідомлення: .alert з елементами icon / text і модифікаторами --success / --error / --warning.
+// Тип повідомлення видно зі значка й першого слова, а не лише з кольору.
+@use '../abstracts/variables' as *;
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: $space * 1.5;
+  padding: $space * 1.5 $space * 2;
+  border: 1px solid var(--color-border);
+  border-left-width: 4px;
+  border-radius: $radius;
+  background: var(--color-surface);
+  color: var(--color-text);
+
+  &__icon {
+    flex: none;
+    font-weight: $fw-bold;
+  }
+
+  &--success {
+    border-color: var(--color-success);
+    background: var(--color-success-bg);
+    color: var(--color-success);
+  }
+
+  &--error {
+    border-color: var(--color-error);
+    background: var(--color-error-bg);
+    color: var(--color-error);
+  }
+
+  &--warning {
+    border-color: var(--color-warning);
+    background: var(--color-warning-bg);
+    color: var(--color-warning);
+  }
+}

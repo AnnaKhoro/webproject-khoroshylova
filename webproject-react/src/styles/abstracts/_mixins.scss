@@ -1,0 +1,43 @@
+// Міксини проєкту «Хвиля»
+@use 'variables' as *;
+
+// Flex-контейнер з вирівнюванням по центру; напрямок і вирівнювання по головній осі — параметри
+@mixin flex-center($direction: row, $justify: center) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: center;
+  justify-content: $justify;
+}
+
+// Медіазапит за назвою точки адаптивності (mobile-first)
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == tablet {
+    @media (min-width: $bp-tablet) { @content; }
+  } @else if $breakpoint == desktop {
+    @media (min-width: $bp-desktop) { @content; }
+  } @else {
+    @error "Невідома точка адаптивності: #{$breakpoint}";
+  }
+}
+
+// Обрізання тексту трикрапкою: в один рядок або в кілька
+@mixin text-truncate($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+// Видимий індикатор фокусу для клавіатури (замість прибраного outline)
+@mixin focus-ring($offset: 2px) {
+  &:focus-visible {
+    outline: $focus-ring solid var(--color-focus);
+    outline-offset: $offset;
+  }
+}

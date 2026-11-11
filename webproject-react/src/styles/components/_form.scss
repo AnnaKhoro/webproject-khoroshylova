@@ -1,0 +1,79 @@
+// Поле форми: .field з елементами label / input / hint / error і модифікаторами --invalid, --disabled
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $space * 0.5;
+
+  &__label {
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+  }
+
+  &__input {
+    padding: $space $space * 2;
+    font: inherit;
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: $radius;
+    transition: border-color $transition;
+
+    @include focus-ring(1px);
+
+    &::placeholder {
+      color: var(--color-muted);
+    }
+
+    &:hover {
+      border-color: var(--color-muted);
+    }
+  }
+
+  // багаторядкове поле: змінюється лише висота
+  &__input--textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  &__hint {
+    font-size: $fs-sm;
+    color: var(--color-muted);
+  }
+
+  // Помилка: текст зі значком, а не лише червона рамка
+  &__error {
+    display: none;
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    color: var(--color-error);
+
+    &::before {
+      content: '⚠ ';
+    }
+  }
+
+  &--invalid {
+    .field__input {
+      border: 2px solid var(--color-error);
+    }
+
+    .field__error {
+      display: block;
+    }
+  }
+
+  &--disabled {
+    .field__label {
+      color: var(--color-muted);
+    }
+
+    .field__input {
+      background: var(--color-bg-alt);
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}

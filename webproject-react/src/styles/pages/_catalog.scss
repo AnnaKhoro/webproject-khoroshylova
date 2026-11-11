@@ -1,0 +1,82 @@
+// Сторінка каталогу випусків: розкладка фільтрів, підсумку, сітки й форми пропозиції
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.catalog {
+  padding: $space * 4 0;
+
+  &__filters {
+    display: flex;
+    flex-direction: column;
+    gap: $space * 2;
+    margin-bottom: $space * 3;
+  }
+
+  &__controls {
+    display: flex;
+    flex-direction: column;
+    gap: $space * 2;
+
+    @include respond-to(tablet) {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+  }
+
+  // сортування й кнопка оновлення в один ряд, вирівняні по нижньому краю
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: $space * 1.5;
+  }
+
+  // поле пошуку займає всю вільну ширину ряду поруч із сортуванням
+  &__controls > .search {
+    flex: 1;
+  }
+
+  &__summary {
+    margin-bottom: $space * 2;
+    color: var(--color-muted);
+  }
+
+  // повідомлення «Нічого не знайдено» займає всю ширину сітки
+  &__list > .alert {
+    grid-column: 1 / -1;
+  }
+
+  &__suggest {
+    margin-top: $space * 6;
+    padding-top: $space * 4;
+    border-top: 1px solid var(--color-border);
+  }
+
+  &__intro {
+    max-width: $content-width;
+    margin-bottom: $space * 3;
+    color: var(--color-muted);
+  }
+
+  &__result:not(:empty) {
+    max-width: 760px;
+    margin-bottom: $space * 3;
+  }
+
+  &__form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space * 2.5;
+    max-width: 760px;
+
+    @include respond-to(tablet) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  // поле опису й кнопка займають обидві колонки форми
+  &__wide {
+    grid-column: 1 / -1;
+  }
+}
