@@ -27,6 +27,7 @@ const els = {
   tags: document.querySelector('#catalog-tags'),
   list: document.querySelector('#catalog'),
   summary: document.querySelector('#catalog-summary'),
+  refresh: document.querySelector('#catalog-refresh'),
   modal: document.querySelector('#episode-modal'),
   modalContent: document.querySelector('#episode-modal-content'),
   form: document.querySelector('#suggest-form'),
@@ -36,7 +37,8 @@ const els = {
 // Увесь стан інтерфейсу — в одному об'єкті; змінюється лише заміною на новий об'єкт
 // status: 'idle' → 'loading' → 'success' | 'error'
 // mode: 'catalog' — основний каталог, 'search' — результати пошуку в API
-let state = { status: 'idle', error: null, mode: 'catalog', query: '', category: null, sort: 'title', favorites: [] };
+// source/savedAt — звідки взято каталог (cache | network) і коли його збережено
+let state = { status: 'idle', error: null, mode: 'catalog', query: '', category: null, sort: 'title', favorites: [], source: null, savedAt: null };
 
 function setState(patch) {
   state = { ...state, ...patch };
@@ -71,8 +73,12 @@ function update() {
   els.list.innerHTML = renderList(list, state.favorites, state.query);
   els.tags.innerHTML = renderCategoryTags(store.categories, store.countByCategory(), state.category);
   const where = state.mode === 'search' ? `за запитом «${state.query.trim()}» в Apple Podcasts` : 'у каталозі «Хвилі»';
+  const time = state.savedAt ? new Date(state.savedAt).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' }) : '';
+  const origin = state.mode === 'catalog' && state.source
+    ? (state.source === 'cache' ? ` · дані з кешу, збережені о ${time}` : ` · дані з мережі, оновлено о ${time}`)
+    : '';
   els.summary.textContent =
-    `Знайдено випусків ${where}: ${list.length} із ${store.all().length}, загальна тривалість ${formatDuration(Store.totalDuration(list))}`;
+    `Знайдено випусків ${where}: ${list.length} із ${store.all().length}, загальна тривалість ${formatDuration(Store.totalDuration(list))}${origin}`;
 }
 
 // Живий пошук у мережі: запит надсилається через 300 мс після останнього натискання (debounce),
@@ -176,18 +182,24 @@ els.form.addEventListener('submit', (event) => {
 els.form.addEventListener('input', (event) => clearFieldError(event.target));
 els.form.addEventListener('change', (event) => clearFieldError(event.target));
 
+// Примусове оновлення: каталог — без кешу; результати пошуку — повторний запит
+els.refresh.addEventListener('click', () => {
+  if (state.mode === 'search') runSearch(state.query);
+  else load({ force: true });
+});
+
 // Завантаження даних з трьома станами інтерфейсу
-async function load() {
-  lastRequest = () => load();
+async function load({ force = false } = {}) {
+  lastRequest = () => load({ force });
   setState({ status: 'loading', error: null });
   try {
-    const catalog = await loadCatalog();
+    const catalog = await loadCatalog({ force });
     catalogStore = new Store(catalog);
     store = catalogStore;
     counts = store.countByCategory();
     existingTitles = catalog.podcasts.map((p) => p.title);
-    setState({ status: 'success' });
-    console.log('countByCategory():', counts);
+    setState({ status: 'success', mode: 'catalog', source: catalog.meta.source, savedAt: catalog.meta.savedAt });
+    console.log(`Каталог: ${catalog.meta.source === 'cache' ? 'з кешу' : 'з мережі'}`, 'countByCategory():', counts);
   } catch (error) {
     console.error('Помилка завантаження каталогу:', error);
     setState({ status: 'error', error });

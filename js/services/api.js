@@ -1,6 +1,10 @@
 // Доступ до публічного REST API iTunes Search (каталог подкастів Apple).
 // Лише мережа й дані — жодних звернень до DOM. На темі 9 BASE_URL зміниться на власний API.
+import { readCache, writeCache } from './cache.js';
+
 const BASE_URL = 'https://itunes.apple.com';
+const CATALOG_CACHE_KEY = 'khvylia:catalog';
+const CATALOG_TTL = 5 * 60 * 1000;             // строк придатності кешу — 5 хвилин
 
 // Розділи каталогу «Хвилі»: за якими словами шукати випуски
 export const SECTIONS = [
@@ -104,11 +108,17 @@ export function toCatalog(records) {
   };
 }
 
-// Увесь каталог: шість незалежних запитів виконуються ОДНОЧАСНО через Promise.all
-export async function getCatalog() {
+// Увесь каталог: спершу кеш (якщо чинний), інакше шість незалежних запитів ОДНОЧАСНО через Promise.all.
+// force = true — примусове оновлення, кеш ігнорується. meta каже, звідки дані й коли їх збережено.
+export async function getCatalog({ force = false } = {}) {
+  const cached = force ? null : readCache(CATALOG_CACHE_KEY, CATALOG_TTL);
+  if (cached) {
+    return { ...cached.data, meta: { source: 'cache', savedAt: cached.savedAt } };
+  }
   const results = await Promise.all(SECTIONS.map((s) => searchEpisodes(s.term)));
   const records = results.flatMap((list, i) => list.map((raw) => ({ raw, fallbackSlug: SECTIONS[i].slug })));
-  return toCatalog(records);
+  const entry = writeCache(CATALOG_CACHE_KEY, toCatalog(records));
+  return { ...entry.data, meta: { source: 'network', savedAt: entry.savedAt } };
 }
 
 // Живий пошук по всьому каталогу: кожен новий запит СКАСОВУЄ попередній, щоб застаріла відповідь

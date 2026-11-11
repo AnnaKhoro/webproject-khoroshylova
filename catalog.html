@@ -34,12 +34,15 @@
           <input class="search__input" id="catalog-query" name="q" type="search" placeholder="Назва, тема або подкаст" autocomplete="off">
           <button class="button button--primary" type="submit">Знайти</button>
         </form>
-        <div class="field">
-          <label class="field__label" for="catalog-sort">Сортування</label>
-          <select class="field__input" id="catalog-sort" name="sort">
-            <option value="title">За назвою (А–Я)</option>
-            <option value="date">Спочатку нові</option>
-          </select>
+        <div class="catalog__actions">
+          <div class="field">
+            <label class="field__label" for="catalog-sort">Сортування</label>
+            <select class="field__input" id="catalog-sort" name="sort">
+              <option value="title">За назвою (А–Я)</option>
+              <option value="date">Спочатку нові</option>
+            </select>
+          </div>
+          <button class="button button--secondary" type="button" id="catalog-refresh" title="Завантажити свіжі дані, не чекаючи, поки мине строк кешу">⟳ Оновити</button>
         </div>
       </div>
       <div class="tags" id="catalog-tags" aria-label="Категорії"></div>
