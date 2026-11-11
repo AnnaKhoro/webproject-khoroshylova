@@ -12,10 +12,19 @@ import { EpisodeList } from '../components/EpisodeList.jsx';
 const store = new Store({ episodes, podcasts, categories });
 const counts = store.countByCategory();
 
+// Тимчасовий ручний перемикач стану для перевірки: ?status=loading | error
+// (так само його можна змінити в React Developer Tools). Справжнє завантаження — на ПР12.
+function initialStatus() {
+  const value = new URLSearchParams(window.location.search).get('status');
+  return ['loading', 'error', 'success'].includes(value) ? value : 'success';
+}
+
 export function CatalogPage() {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState(null);   // slug або null — «Усі»
   const [sort, setSort] = useState('title');         // 'title' | 'date'
+  const [status, setStatus] = useState(initialStatus);   // 'loading' | 'success' | 'error'
+  const error = status === 'error' ? Object.assign(new Error('HTTP 503'), { status: 503 }) : null;
 
   // Похідні дані: обчислюються під час кожного рендерингу, а не зберігаються в стані
   const filtered = store
@@ -44,10 +53,12 @@ export function CatalogPage() {
         </div>
         <CategoryFilter categories={store.categories} counts={counts} value={category} onChange={setCategory} />
       </div>
-      <p className="catalog__summary" role="status">
-        Знайдено випусків: {filtered.length} із {store.all().length}, загальна тривалість {formatDuration(Store.totalDuration(filtered))}
-      </p>
-      <EpisodeList episodes={filtered} onOpen={handleOpen} />
+      {status === 'success' && (
+        <p className="catalog__summary" role="status">
+          Знайдено випусків: {filtered.length} із {store.all().length}, загальна тривалість {formatDuration(Store.totalDuration(filtered))}
+        </p>
+      )}
+      <EpisodeList status={status} error={error} episodes={filtered} onOpen={handleOpen} onRetry={() => setStatus('success')} />
     </main>
   );
 }
